@@ -1,0 +1,14 @@
+'''simpleEvol.py
+A simple example of evolutionary computation using pyevolve.
+Simply for familiarizing me with pyevolve
+
+'''
+# Libraries
+from __future__ import absolute_import, division, print_function
+import pyevolve
+
+
+def main():
+    print("test")
+
+main()
