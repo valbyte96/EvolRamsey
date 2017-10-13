@@ -62,6 +62,13 @@ def playGame():
 
     print("player",wins,"wins")
     return wins
+
+############################TESTING PORTION###################################
+
+
+
+
+
         
 ###############################################################################
 ##########################EVOLVING PORTION OF CODE#############################
@@ -76,12 +83,9 @@ def fitness(chromosome):
     return score
 
 
-def main():
+def mainEvolve():
     genome = G1DList.G1DList(10)
     genome.evaluator.set(fitness)
     ga = GSimpleGA.GSimpleGA(genome)
     ga.evolve(freq_stats=10)
     
-
-
-main()

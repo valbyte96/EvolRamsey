@@ -1,40 +1,56 @@
 ''' Graph.py
 @author: Ted McCulloch
 @version: 9/23/17
-Underlying graph class for playing Ramsey games
+Graph.py contains three separate classes:
+>Node
+>Edge
+>Graph
+
 '''
 from __future__ import absolute_import, division, print_function
 import sys, os
+import random
 
 
 '''Node Class'''
 class Node:
     def __init__(self, ID):
-        self.ID = ID
-        self.neighbors = [] #TODO: implement a list of neighbors
+        '''Constructor
+        @params ID: unique numerical identifier for each node
+        >neighbors: initialize empty list of neighbors
+        >visited: node's status of whether or not it's been visited'''
+        self.ID = ID 
+        self.neighbors = [] 
         self.visited = False
-
     def addNeighbor(self, neigh):
+        '''@param neigh: node that is connected to this node via edge
+        adds neighbors to running list contained in Node class'''
         self.neighbors.append(neigh)
-
     def getDegree(self):
+        '''returns degree'''
         return len(self.neighbors)
-    def visited(self):
+    def visit(self):
+        '''marks node as visited'''
         self.visited = True
 
 '''Edge Class'''
 class Edge:
     def __init__(self, n1, n2):
-        self.n1 = n1
-        self.n2 = n2
-        self.color = "black"
-
+        '''Constructor
+        @params n1, n2: two node objects such that n1!=n2
+        >color: specifies color of edge; defaults to black
+        >L: List for storing node objects'''
+        self.color = "black" # default
+        self.L = [n1, n2]
     def getColor(self):
+        '''returns current color'''
         return self.color
-
     def setColor(self, color):
+        '''@param color: new color
+        use to change edge object's color '''
         self.color = color
-    def isColored(self):
+    def isColored(self): # redundant method? 
+        '''returns is colored'''
         if self.color == "black":
             return False
         else:
@@ -43,61 +59,99 @@ class Edge:
 '''Graph Class'''
 class Graph:
     def __init__(self, nNodes):
+        '''Constructor
+        @params nNodes: number of nodes
+        >neighbors: TODO
+        >nodeList: record of nodes
+        >edgeList: record of edges
+        >cCount: counts the number of edges colored
+        '''
         self.nNodes = nNodes
-        self.neighbors = {} # dictionary: keys = nodes; values = neighbors
         self.nodeList = []
         self.edgeList = []
-        self.cCount = 0 # counts the number of edges colors with any color
-        # add in the specified nodes
+        self.cCount = 0 
+        '''adds nodes specified'''
         for i in range(nNodes):
             self.addNode(i)
 
-    def addNode(self, i):
-        node = Node(i)
-        self.nodeList.append(node)
+    def addNode(self, i): 
+        '''@params i: ID number for new node'''
+        self.nodeList.append(Node(i))
 
     def addEdge(self, n1, n2):
-        edge = Edge(n1, n2) # create edge
-        n1.addNeighbor(n2) # record new neighbors
+        '''@params n1, n2: Nodes attached by new edge
+        method records two nodes as neibhors and adds edge to edge list'''
+        n1.addNeighbor(n2) 
         n2.addNeighbor(n1)
-        self.edgeList.append(edge) # record new edge
-
+        self.edgeList.append(Edge(n1, n2)) 
     def incColor(self):
+        '''increments the counter for number of edges colored'''
         self.cCount+=1
     def done(self):
+        '''indicates whether or not all edges are colored'''
         if self.cCount == len(self.edgeList):
             return True
         return False
     def getNode(self, ID):
+        '''@params ID: node ID number
+        returns node object based on node ID'''
         return self.nodeList[ID]
-    def getEdges(self):
+    def getEdges(self): # necessary? 
+        '''method returns edgeList'''
         return self.edgeList
+    def isEdge(self, x, y):
+        '''@param x,y: distinct nodes
+        method indicates if an edge exists between these two nodes'''
+        for e in self.edgeList: # HASHMAP?
+            if (x in e.L and y in e.L):
+                return True
+            else:
+                return False
+    def printGraph(self):
+        '''Displays graph information'''
+        print("Node IDs")
+        for n in self.nodeList:
+            print(n.ID)
+        print("Edges by Node IDs")
+        for e in self.edgeList:
+            print(str(e.L[0].ID)+" "+str(e.L[1].ID))
 
-    # METHODS IN DEVELOPMENT/ UNTESTED
+            
+
+
+#<--------------------------METHODS IN DEVELOPMENT-------------------------------->
+    # nearly complete 
     def randomize(self):
-        self.reset() # reset graph first
+        '''method randomizes graph
+        >total: calculates the number of edges in graph
+                n-1 is a tree
+                n*(n-1)/2 is a complete graph'''
+        #self.reset() # TODO: For now only call this method when graph is empty
+        n = self.nNodes
+        total = random.randint(n-1,n*(n-1)/2)
+
+        '''nested loops ensure no nodes linked to themselves and no repeat edges'''
+        while(total!=0):
+            n1 = random.randint(0,n-1)
+            n2 = random.randint(0,n-1)
+            while((n1==n2) and (self.isEdge(self.getNode(n1), self.getNode(n2)))):
+                n1 = random.randint(0,n-1)
+                n2 = random.randint(0,n-1)
+            self.addEdge(self.getNode(n1),self.getNode(n2))
+            total-=1
+        return self
+            
 
     # resets graph to initial state
     # probably doesn't work (TODO)
     def reset(self):
-        self.neighbors = {} # dictionary: keys = nodes; values = neighbors
         self.nodeList = []
         self.edgeList = []
         self.cCount = 0 # counts the number of edges colors with any color
         # add in the specified nodes
         for i in range(nNodes):
             self.addNode(i)
-    
-    
-    
-    # TESTING CLASSES
 
-    
-    def printNodes(self):
-        for n in self.nodeList:
-            print(n.ID)
-        
-    
 
 
 
