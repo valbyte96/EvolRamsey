@@ -115,21 +115,14 @@ class Graph:
         print("Edges by Node IDs")
         for e in self.edgeList:
             print(str(e.L[0].ID)+" "+str(e.L[1].ID))
-
-            
-
-
-#<--------------------------METHODS IN DEVELOPMENT-------------------------------->
-    # nearly complete 
     def randomize(self):
         '''method randomizes graph
         >total: calculates the number of edges in graph
                 n-1 is a tree
                 n*(n-1)/2 is a complete graph'''
-        #self.reset() # TODO: For now only call this method when graph is empty
+        self.reset()
         n = self.nNodes
         total = random.randint(n-1,n*(n-1)/2)
-
         '''nested loops ensure no nodes linked to themselves and no repeat edges'''
         while(total!=0):
             n1 = random.randint(0,n-1)
@@ -139,18 +132,21 @@ class Graph:
                 n2 = random.randint(0,n-1)
             self.addEdge(self.getNode(n1),self.getNode(n2))
             total-=1
-        return self
+        return self            
+    def reset(self):
+        '''removes all edges and readds nodes to reset to blank graph'''
+        del self.nodeList[:]
+        del self.edgeList[:]
+        self.cCount = 0 
+        '''add in the specified nodes'''
+        for i in range(self.nNodes):
+            self.addNode(i)
             
 
-    # resets graph to initial state
-    # probably doesn't work (TODO)
-    def reset(self):
-        self.nodeList = []
-        self.edgeList = []
-        self.cCount = 0 # counts the number of edges colors with any color
-        # add in the specified nodes
-        for i in range(nNodes):
-            self.addNode(i)
+
+#<--------------------------METHODS IN DEVELOPMENT-------------------------------->
+    # nearly complete 
+
 
 
 

@@ -42,7 +42,8 @@ def randomize(graph):
 def main():
     nNodes = 5
     g = Graph(nNodes)
-    g.randomize()
+    #g.randomize()
+    randomize(g)
     g.printGraph()
 
 
