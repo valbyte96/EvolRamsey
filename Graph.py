@@ -102,11 +102,13 @@ class Graph:
     def isEdge(self, x, y):
         '''@param x,y: distinct nodes
         method indicates if an edge exists between these two nodes'''
+        b = False
         for e in self.edgeList: # HASHMAP?
             if (x in e.L and y in e.L):
-                return True
-            else:
-                return False
+                b = True
+        return b
+                
+
     def printGraph(self):
         '''Displays graph information'''
         print("Node IDs")
@@ -127,7 +129,7 @@ class Graph:
         while(total!=0):
             n1 = random.randint(0,n-1)
             n2 = random.randint(0,n-1)
-            while((n1==n2) and (self.isEdge(self.getNode(n1), self.getNode(n2)))):
+            while(n1==n2 or self.isEdge(self.getNode(n1), self.getNode(n2))):
                 n1 = random.randint(0,n-1)
                 n2 = random.randint(0,n-1)
             self.addEdge(self.getNode(n1),self.getNode(n2))
@@ -145,7 +147,6 @@ class Graph:
 
 
 #<--------------------------METHODS IN DEVELOPMENT-------------------------------->
-    # nearly complete 
 
 
 
