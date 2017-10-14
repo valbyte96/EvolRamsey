@@ -11,7 +11,6 @@ import random as rand
 sys.path.append(os.path.abspath('../pyevolve'))
 from pyevolve import *
 
-T = []
 # just a triangle
 def testG1(g):
     n0 = g.getNode(0)
@@ -29,6 +28,15 @@ def testG1(g):
     g.addEdge(n3,n4)
     g.addEdge(n3,n5)
     g.addEdge(n4,n5)
+
+    return g
+
+
+def testG2(g):
+    g.randomize()
+    g.printGraph()
+
+    return g
 
 
 
@@ -53,32 +61,35 @@ def depth(sNode, node, level, tri):
        printTri(tri)
     if level<2:
         for n in nodes:
-            print("head:",node.ID)
-            printTri(nodes)
-            print()
-            #print(node.ID)
-            #print()
-            #print(n.ID)
-            tri.append(n)
+
+            
             if n.getDegree()==1:
                 node.visit()
             elif not n.visited:
+                tri.append(n)
                 node.visit()
                 depth(sNode, n, level+1, tri)
+                
 
 def printTri(tri):
     for n in tri:
         print(n.ID)
+
+
+    print(T)
+                
                               
 
 
 def main():
     global g
-    g = Graph(6)
-    testG1(g)
-    
-    for i in range(6):
-        depth(g.getNode(i), g.getNode(i), 0, [])
+    n = 6
+    g = Graph(n)
+    g = testG1(g)
+    g.countT()
+    print(g.getNumTri())
+    #for i in range(n):
+        #depth(g.getNode(i), g.getNode(i), 0, [])
 
 
     

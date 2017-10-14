@@ -42,6 +42,11 @@ class Edge:
         >L: List for storing node objects'''
         self.color = "black" # default
         self.L = [n1, n2]
+    def contains(self, x, y):
+        '''Given two nodes'''
+        if x in self.L and y in self.L:
+            return True
+        return False
     def getColor(self):
         '''returns current color'''
         return self.color
@@ -69,6 +74,7 @@ class Graph:
         self.nNodes = nNodes
         self.nodeList = []
         self.edgeList = []
+        self.triangles = []
         self.cCount = 0 
         '''adds nodes specified'''
         for i in range(nNodes):
@@ -104,11 +110,12 @@ class Graph:
         method indicates if an edge exists between these two nodes'''
         b = False
         for e in self.edgeList: # HASHMAP?
-            if (x in e.L and y in e.L):
+            if e.contains(x,y):
                 b = True
         return b
-                
-
+    def getNumTri(self):
+        '''method returns the number of triangles in graph'''
+        return len(self.triangles)
     def printGraph(self):
         '''Displays graph information'''
         print("Node IDs")
@@ -143,12 +150,35 @@ class Graph:
         '''add in the specified nodes'''
         for i in range(self.nNodes):
             self.addNode(i)
+#<------------------------------IN DEVELOPMENT-------------------------------->
+
+    def countT(self):
+        '''Method for counting the number of triangles in the graph.
+        Method tests each edge (x,y) to see if there exists a node n such that
+        there is a triangle xy yn xn. 
+        Notes:
+            >O(n^3)
+            >Look into optimizing this'''
+        T = [] # prevents overcounting
+        for e in self.edgeList:
+            x = e.L[0]
+            y = e.L[1]
+            for n in self.nodeList:
+                if n==x or n==y:
+                    continue
+                elif self.isEdge(x,n) and self.isEdge(y,n):
+                    L = [x, y, n]
+                    L.sort()
+                    if L not in T:
+                        T.append(L)
+                        self.triangles.append(Triangle(x,y,n))
             
 
+'''Triangle Class'''           
 
-#<--------------------------METHODS IN DEVELOPMENT-------------------------------->
-
-
+class Triangle:
+    def __init__(self, n1, n2, n3):
+        self.nodes = [n1, n2, n3]
 
 
 
