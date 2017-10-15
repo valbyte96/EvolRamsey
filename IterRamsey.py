@@ -13,14 +13,36 @@ colorList = ['red', 'blue']
 class IterRamsey:
     def __init__(self, ID, graph):
         self.ID = ID
-        self.strat = "random"
+        self.strat = "tri1"
         self.graph = graph
         self.color = colorList[ID]
 
     
     def play(self):
-        if self.strat == "random":
-            self.randomStrat()
+        if self.strat == "tri1":
+            self.tri1Strat()
+    def tri1Strat(self):
+        '''Always color in the most "available" triangle
+            Doesn't take into account color yet'''
+        tri = self.graph.triangles
+        s = 10
+        sTri = []
+        
+        for t in tri:
+            if not t.isFull():
+                n = t.available() #
+                if n<s:
+                    s = n
+                    sTri = t # save triangle
+        if sTri!=[]:
+            e = sTri.getAvailable()
+            e.setColor(self.color)
+            self.graph.incColor()
+                
+                
+                
+            
+        
             
     def randomStrat(self):
         edges = self.graph.getEdges()

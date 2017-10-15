@@ -42,6 +42,7 @@ class Edge:
         >L: List for storing node objects'''
         self.color = "black" # default
         self.L = [n1, n2]
+        self.notColored = 1
     def contains(self, x, y):
         '''Given two nodes'''
         if x in self.L and y in self.L:
@@ -54,6 +55,7 @@ class Edge:
         '''@param color: new color
         use to change edge object's color '''
         self.color = color
+        self.notColored = 0
     def isColored(self): # redundant method? 
         '''returns is colored'''
         if self.color == "black":
@@ -151,7 +153,34 @@ class Graph:
         for i in range(self.nNodes):
             self.addNode(i)
 #<------------------------------IN DEVELOPMENT-------------------------------->
-
+    def winner(self):
+        c1 = 0
+        c2 = 0
+        for t in self.triangles:
+            if t.isMono():
+                e = t.edges[0].color
+                if e =='blue':
+                    c1+=1
+                elif e =='red':
+                    c2+=1
+        if c1>c2:
+            return 'blue'
+        elif c1<c2:
+            return 'red'
+        else:
+            return 'tie game'
+                
+        
+            
+    
+    def getEdge(self, n1, n2):
+        '''@params n1, n2: two nodes making up an edge
+        if edge exists, returns it, else returns false'''
+        for e in self.edgeList: # HASHMAP?
+            if e.contains(n1,n2):
+                return e
+        return False       
+    
     def countT(self):
         '''Method for counting the number of triangles in the graph.
         Method tests each edge (x,y) to see if there exists a node n such that
@@ -171,14 +200,46 @@ class Graph:
                     L.sort()
                     if L not in T:
                         T.append(L)
-                        self.triangles.append(Triangle(x,y,n))
+                        self.triangles.append(Triangle(self, x,y,n))
+        print(len(self.triangles))
             
 
 '''Triangle Class'''           
 
 class Triangle:
-    def __init__(self, n1, n2, n3):
+    '''Constructor'''
+    def __init__(self, g, n1, n2, n3):
         self.nodes = [n1, n2, n3]
+        self.edges = [g.getEdge(n1,n2), g.getEdge(n1,n3), g.getEdge(n3,n2)]
+
+
+    def isFull(self):
+        '''Method returns True if all edges colored in'''
+        e = self.edges;
+        if e[0].isColored() and e[1].isColored() and e[2].isColored():
+            return True
+        return False
+    def isMono(self):
+        '''Method returns True if triangle in a single color'''
+        c = self.edges[0].color
+        for e in self.edges:
+            if e.color != c:
+                return False
+        return True           
+    def available(self):
+        '''Method returns the number of edges available to be colored'''
+        e = self.edges;
+        return e[0].notColored + e[1].notColored + e[2].notColored
+    def getAvailable(self):
+        '''Method returns an available edge to be colored;
+           if no edge exists it returns 0.'''
+        for e in self.edges:
+            if e.notColored == 1:
+                return e
+        return 0
+
+    
+        
 
 
 

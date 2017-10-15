@@ -40,8 +40,7 @@ def playGame():
     nNodes = 10
     g = Graph(nNodes)
     g = testGraph(g)
-    player1 = IterRamsey(0, g)
-    player2 = IterRamsey(1, g)
+
     wins = 10000
 
     # temp variable
