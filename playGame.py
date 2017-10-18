@@ -13,7 +13,7 @@ from pyevolve import *
 
 
 def play():
-    n = 8
+    n = 5
     g = Graph(n)
     g.randomize()
     g.countT()
@@ -26,7 +26,7 @@ def play():
             # TODO: win detection
             print("game over")
             break
-        player1.play().edges[0].color=='blue'
+        player1.play()
         player2.play()
 
         

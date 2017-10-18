@@ -133,7 +133,7 @@ class Graph:
                 n*(n-1)/2 is a complete graph'''
         self.reset()
         n = self.nNodes
-        total = random.randint(n-1,n*(n-1)/2)
+        total = random.randint(n+1,n*(n-1)/2)
         '''nested loops ensure no nodes linked to themselves and no repeat edges'''
         while(total!=0):
             n1 = random.randint(0,n-1)
@@ -164,10 +164,14 @@ class Graph:
                 elif e =='red':
                     c2+=1
         if c1>c2:
+            print('red',c2)
+            print('blue',c1)
             return 'blue'
         elif c1<c2:
             return 'red'
         else:
+            print('red',c2)
+            print('blue',c1)
             return 'tie game'
                 
         
