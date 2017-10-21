@@ -8,7 +8,7 @@ from __future__ import absolute_import, division, print_function
 import sys, os
 import random as rand
 
-colorList = ['blue', 'red']
+colorList = ['red', 'blue']
 
 class IterRamsey:
     def __init__(self, ID, graph):
@@ -21,6 +21,9 @@ class IterRamsey:
     def play(self):
         if self.strat == "tri1":
             self.tri1Strat()
+        elif self.strat == "random":
+            self.randomStrat()
+        
     def tri1Strat(self):
         '''Always color in the most "available" triangle
             Doesn't take into account color yet'''
@@ -37,7 +40,6 @@ class IterRamsey:
         if sTri!=[]:
             e = sTri.getAvailable()
             e.setColor(self.color)
-            print(self.color)
             self.graph.incColor()
         else:
             self.graph.cCount = len(self.graph.edgeList)

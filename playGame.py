@@ -13,11 +13,11 @@ from pyevolve import *
 
 
 def play():
-    n = 5
+    n = 4
     g = Graph(n)
     g.randomize()
     g.countT()
-    #g.printGraph()
+    g.printGraph()
     player1 = IterRamsey(0, g)
     player2 = IterRamsey(1, g)
     

@@ -168,6 +168,8 @@ class Graph:
             print('blue',c1)
             return 'blue'
         elif c1<c2:
+            print('red',c2)
+            print('blue',c1)
             return 'red'
         else:
             print('red',c2)
