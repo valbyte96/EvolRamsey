@@ -20,6 +20,7 @@ def play():
  #  g.printGraph()
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
+    player2.setStrat("block")
     r = 0
     while(True):
         if g.done():

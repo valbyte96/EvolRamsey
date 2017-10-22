@@ -8,7 +8,8 @@ from __future__ import absolute_import, division, print_function
 import sys, os
 import random as rand
 
-colorList = ['red', 'blue']
+colorList = ["red", "blue"]
+stratList = ["block","build","random","tri1"]
 
 class Player:
     def __init__(self, ID, graph):
@@ -22,10 +23,14 @@ class Player:
         if self.strat == "block":
             self.block()
         elif self.strat == "build":
-            #self.tri1Strat()
             self.build()
-        elif self.strat == "random":
+        elif self.strat == "tri1":
+            self.tri1Strat()
+        else:
             self.random()
+            
+    def setStrat(self, name):
+        self.strat = name
 
     def build(self): #very simple
         '''always build before anything else'''

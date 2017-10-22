@@ -239,6 +239,7 @@ class Triangle:
                 return False
         return True
     def antiSingleC(self,color):
+        '''for blocking method'''
         for e in self.edges:
             if e.color!="black" and e.color== color:
                 return False
