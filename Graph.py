@@ -231,7 +231,20 @@ class Triangle:
         for e in self.edges:
             if e.color != c:
                 return False
-        return True           
+        return True
+    def singleC(self, color):
+        '''Method returns True if a triangle is only color and black'''
+        for e in self.edges:
+            if e.color!="black" and e.color!= color:
+                return False
+        return True
+    def antiSingleC(self,color):
+        for e in self.edges:
+            if e.color!="black" and e.color== color:
+                return False
+        return True
+        
+        
     def available(self):
         '''Method returns the number of edges available to be colored'''
         e = self.edges;
