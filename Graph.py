@@ -77,10 +77,15 @@ class Graph:
         self.nodeList = []
         self.edgeList = []
         self.triangles = []
-        self.cCount = 0 
+        self.cCount = 0
+        self.intervals = 5 # default to five
         '''adds nodes specified'''
         for i in range(nNodes):
             self.addNode(i)
+
+    def setInterval(self, n):
+        '''setter method for number of intervals'''
+        self.intervals = n
 
     def addNode(self, i): 
         '''@params i: ID number for new node'''

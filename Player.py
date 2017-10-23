@@ -14,7 +14,7 @@ stratList = ["block","build","random","tri1"]
 class Player:
     def __init__(self, ID, graph):
         self.ID = ID
-        self.strat = "build"
+        self.strat = "random" # default to random
         self.graph = graph
         self.color = colorList[ID]
 
@@ -26,7 +26,10 @@ class Player:
             self.build()
         elif self.strat == "tri1":
             self.tri1Strat()
+        elif self.strat == "random":
+            self.random()
         else:
+            print("Warning: strategy doesn't exist")
             self.random()
             
     def setStrat(self, name):
