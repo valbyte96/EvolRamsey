@@ -78,10 +78,15 @@ class Graph:
         self.edgeList = []
         self.triangles = []
         self.cCount = 0
-        self.intervals = 5 # default to five
+        self.intervals = 3 # default to three
         '''adds nodes specified'''
         for i in range(nNodes):
             self.addNode(i)
+    def prep(self):
+        '''Given a graph on n nodes, randomize, count, and define intervals'''
+        self.randomize()
+        self.countT()
+        # TODO define intervals
 
     def setInterval(self, n):
         '''setter method for number of intervals'''

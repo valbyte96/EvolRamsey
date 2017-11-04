@@ -1,4 +1,4 @@
-'''playGame.py
+'''evolGame.py
 This file ensures that game playing is working properly
 
 '''
@@ -12,14 +12,16 @@ from pyevolve import *
 
 strats = ["build", "block", "random"]
 
+'''Here we are evolving player 1'''
 def play():
     n = 12
     g = Graph(n)
     g.prep()
+ #  g.printGraph()
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
-    player1.setStrat("build") # based on chromosome 
-    player2.setStrat(strats[random.randint(0,2)]) # random or from zoo of opponents
+    player1.setStrat("build")
+    player2.setStrat("build")
     r = 0 # debug
     while(True):
         if g.done(): # stop
@@ -32,7 +34,12 @@ def play():
         player2.play()
         r+=1 # debug
 
-    return g.winner()
+        
+   # print("rounds",r) # Debugger
+   # TODO rounds bug
+   # print("game over")
+   # print(g.winner(), "wins")
+   return g.winner()
 
 def fitness(chromosome):
     score = 0.0
@@ -45,7 +52,14 @@ def fitness(chromosome):
 
 def mainEvol():
     #TODO
-    #genome - create a list of size of the number of 
-    t=0
+    #genome - create a list of size of the number of
     
+    # tell Python what fitness function is 
+    genome.evaluator.set(fitness) #pass in fitness function
+
+    # create genetic algorithm enguine 
+    ga = GSimpleGA.GSimpleGA(genome)
+
+    # run the evolutionary process
+    ga.evolve(freq_stats=10) #runs ge; reports every 10 gens
 
