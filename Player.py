@@ -29,7 +29,8 @@ class Player:
         elif self.strat == "random":
             self.random()
         else:
-            print("Warning: strategy doesn't exist")
+            if self.graph.verbose>0:
+                print("Warning: strategy doesn't exist")
             self.random()
             
     def setStrat(self, name):
@@ -53,7 +54,8 @@ class Player:
             self.graph.incColor()
         else:
             # try another strategy
-            print("build -> random")
+            if self.graph.verbose>0:
+                print("build -> random")
  #           self.tri1Strat()
             self.random()
     
@@ -76,7 +78,8 @@ class Player:
             self.graph.incColor()
         else:
             # try another strategy
-            print("block -> tri1")
+            if self.graph.verbose>0:
+                print("block -> tri1")
             self.tri1Strat()
             #self.random()
         

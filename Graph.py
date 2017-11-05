@@ -79,6 +79,7 @@ class Graph:
         self.triangles = []
         self.cCount = 0
         self.intervals = 3 # default to three
+        self.verbose = 0
         '''adds nodes specified'''
         for i in range(nNodes):
             self.addNode(i)
@@ -91,6 +92,8 @@ class Graph:
     def setInterval(self, n):
         '''setter method for number of intervals'''
         self.intervals = n
+    def setVerbose(self, n):
+        self.verbose = n
 
     def addNode(self, i): 
         '''@params i: ID number for new node'''
@@ -174,20 +177,20 @@ class Graph:
                 elif e =='red':
                     c2+=1
         if c1>c2:
-            print('red',c2)
-            print('blue',c1)
+            if self.verbose>0:
+                print('red',c2)
+                print('blue',c1)
             return 'blue'
         elif c1<c2:
-            print('red',c2)
-            print('blue',c1)
+            if self.verbose>0:
+                print('red',c2)
+                print('blue',c1)
             return 'red'
         else:
-            print('red',c2)
-            print('blue',c1)
-            return 'tie game'
-                
-        
-            
+            if self.verbose>0:
+                print('red',c2)
+                print('blue',c1)
+        return 'tie game'            
     
     def getEdge(self, n1, n2):
         '''@params n1, n2: two nodes making up an edge
@@ -217,7 +220,8 @@ class Graph:
                     if L not in T:
                         T.append(L)
                         self.triangles.append(Triangle(self, x,y,n))
-        print(len(self.triangles))
+        if self.verbose>0:
+            print(len(self.triangles))
             
 
 '''Triangle Class'''           
