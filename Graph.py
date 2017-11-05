@@ -198,7 +198,9 @@ class Graph:
         for e in self.edgeList: # HASHMAP?
             if e.contains(n1,n2):
                 return e
-        return False       
+        return False
+    def getPercent(self):
+        return self.cCount/len(self.edgeList)
     
     def countT(self):
         '''Method for counting the number of triangles in the graph.

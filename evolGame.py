@@ -10,28 +10,34 @@ import random as rand
 sys.path.append(os.path.abspath('../pyevolve'))
 from pyevolve import *
 
-strats = ["build", "block", "random"] # change
+strats0 = ["build", "block", "random"] # change
+strats = [["build","build"],["build","block"],["block","build"],["build","random"],["random","build"]
+          ,["block","random"],["random","block"],["random","random"],["block","block"]]
 
 '''Here we are evolving player 1'''
 def play(strat):
-    n = 5
+    n = 6
     g = Graph(n)
     g.prep()
-    g.setVerbose(0)
- #  g.printGraph()
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
-    player1.setStrat(strat) #get random allele
-    player2.setStrat(strats[random.randint(0,len(strats)-1)])
+    player1.setStrat(strat[0]) #get starting strategy
+    p2Strats = strats[random.randint(0,len(strats)-1)]
+    player2.setStrat(p2Strats[0])
     r = 0 # debug
     while(True):
         if g.done(): # stop
             break
-        # TODO: set strat
         player1.play()
+        if g.getPercent()>=.5:
+            player1.setStrat(strat[1])
+            player2.setStrat(strat[1])
+            
         if g.done(): # stop
             break
-        # TODO: set strat
+        if g.getPercent()>=.5:
+            player1.setStrat(strat[1])
+            player2.setStrat(strat[1])
         player2.play()
         r+=1 # debug
 
@@ -48,25 +54,16 @@ def fitness(chromosome):
 def evalFunc(chromosome):
     score = 0.0
     for c in chromosome:
-        if c==0:
-            result = play("build")
-            if result == "red":
-                score+=1.0
-        elif c==1:
-            result = play("block")
-            if result == "red":
-                score+=1.0
-        else:
-            result = play("random")
-            if result == "red":
-                score+=1.0
+        result = play(strats[c])
+        if result == "red":
+            score+=1.0
     return score
 
 
 def mainEvol():
     genome = G1DList.G1DList(3)
     genome.evaluator.set(evalFunc) #pass in fitness function
-    genome.setParams(rangemin=0, rangemax=2)
+    genome.setParams(rangemin=0, rangemax=8)
     ga = GSimpleGA.GSimpleGA(genome)
     ga.setGenerations(20)
     ga.evolve(freq_stats=10)

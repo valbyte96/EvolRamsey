@@ -16,9 +16,9 @@ def evalFunc(chromosome):
 
 
 def main():
-    genome = G1DList.G1DList(3)
+    genome = G1DList.G1DList(2)
     genome.evaluator.set(evalFunc) #pass in fitness function
-    genome.setParams(rangemin=0, rangemax=2)
+    genome.setParams(rangemin=0, rangemax=8)
     ga = GSimpleGA.GSimpleGA(genome)
     ga.evolve(freq_stats=10)
     print(ga.bestIndividual())
