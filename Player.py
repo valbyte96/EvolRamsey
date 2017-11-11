@@ -9,7 +9,6 @@ import sys, os
 import random as rand
 
 colorList = ["red", "blue"]
-stratList = ["block","build","random","tri1"]
 
 class Player:
     def __init__(self, ID, graph):
