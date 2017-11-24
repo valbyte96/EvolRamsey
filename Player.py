@@ -16,6 +16,8 @@ class Player:
         self.strat = "random" # default to random
         self.graph = graph
         self.color = colorList[ID]
+        self.stratList = []
+
 
     
     def play(self):
@@ -32,8 +34,17 @@ class Player:
                 print("Warning: strategy doesn't exist")
             self.random()
             
-    def setStrat(self, name):
-        self.strat = name
+    def setStrat(self, num):
+        if num<len(self.stratList):
+            self.strat = self.stratList[num]
+        else:
+            print("warning: id number greater than interval number")
+            self.strat = self.stratList[0]
+
+    def setStrats(self, strats):
+        '''Responsible for initializing list of strategies as well as first strategy'''
+        self.stratList = strats
+        self.strat = strats[0]
 
     def build(self): #very simple
         '''always build before anything else'''

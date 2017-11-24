@@ -8,8 +8,10 @@ Graph.py contains three separate classes:
 
 '''
 from __future__ import absolute_import, division, print_function
+from graphics import *
 import sys, os
 import random
+
 
 
 '''Node Class'''
@@ -22,6 +24,11 @@ class Node:
         self.ID = ID 
         self.neighbors = [] 
         self.visited = False
+        #GRAPHICS
+        self.center = None
+        self.circle = None
+        self.r = 5
+        self.color = "black" #default to black
     def addNeighbor(self, neigh):
         '''@param neigh: node that is connected to this node via edge
         adds neighbors to running list contained in Node class'''
@@ -32,6 +39,22 @@ class Node:
     def visit(self):
         '''marks node as visited'''
         self.visited = True
+    #GRAPHICS
+    def setCenter(self, point):
+        self.center = point
+        self.circle = Circle(point, self.r)
+    def setColor(self, color):
+        self.color = color
+        
+    def draw(self, win):
+        self.circle.setFill(self.color)
+        self.circle.draw(win)
+    def redraw(self, win):
+        self.circle.setFill(self.color)
+        self.circle.undraw()
+        self.circle.draw(win)
+        
+        
 
 '''Edge Class'''
 class Edge:
@@ -62,6 +85,9 @@ class Edge:
             return False
         else:
             return True
+    #Graphics
+    def getPoints(self):
+        return self.L[0].center, self.L[1].center
                   
 '''Graph Class'''
 class Graph:
@@ -74,26 +100,40 @@ class Graph:
         >cCount: counts the number of edges colored
         '''
         self.nNodes = nNodes
-        self.nodeList = []
-        self.edgeList = []
+        self.nodeList  = []
+        self.edgeList  = []
         self.triangles = []
         self.cCount = 0
         self.intervals = 3 # default to three
         self.verbose = 0
+        self.unit = 0 # unit size; TODO: best default?
+        self.check = 0
+        self.strat = 0
+        
+        
         '''adds nodes specified'''
         for i in range(nNodes):
             self.addNode(i)
     def prep(self):
-        '''Given a graph on n nodes, randomize, count, and define intervals'''
+        '''Given a graph on n nodes, randomize, count, and define units'''
         self.randomize()
         self.countT()
-        # TODO define intervals
-
+        self.unit = self.getNumEdges()/self.intervals
+        self.check = self.unit
+    def check(self, p1, p2):
+        if self.cCount >=self.check:
+            self.check+=self.unit
+            self.strat+=1
+            p1.setStrat(self.strat)
+            p2.setStrat(self.strat)     
     def setInterval(self, n):
         '''setter method for number of intervals'''
         self.intervals = n
     def setVerbose(self, n):
         self.verbose = n
+    def setUnit(self, unit):
+        print(unit)
+        self.unit = unit
 
     def addNode(self, i): 
         '''@params i: ID number for new node'''
@@ -117,17 +157,23 @@ class Graph:
         '''@params ID: node ID number
         returns node object based on node ID'''
         return self.nodeList[ID]
+   # def getEdge below
+        
+        
     def getEdges(self): # necessary? 
         '''method returns edgeList'''
         return self.edgeList
-    def isEdge(self, x, y):
-        '''@param x,y: distinct nodes
+    def isEdge(self, n1, n2):
+        '''@param n1,n2: distinct nodes
         method indicates if an edge exists between these two nodes'''
         b = False
         for e in self.edgeList: # HASHMAP?
-            if e.contains(x,y):
+            if e.contains(n1,n2):
                 b = True
         return b
+    def getNumEdges(self):
+        '''method returns the number of edges in this graph'''
+        return len(self.edgeList)
     def getNumTri(self):
         '''method returns the number of triangles in graph'''
         return len(self.triangles)
@@ -224,6 +270,9 @@ class Graph:
                         self.triangles.append(Triangle(self, x,y,n))
         if self.verbose>0:
             print(len(self.triangles))
+    
+
+        
             
 
 '''Triangle Class'''           
