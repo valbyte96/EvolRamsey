@@ -61,6 +61,8 @@ class Player:
         if sTri!=[]:
             e = sTri.getAvailable()
             e.setColor(self.color)
+            e.drawEdge(self.graph.win, self.ID)
+            #DGraph.drawEdge(e, self.ID)
             self.graph.incColor()
         else:
             # try another strategy

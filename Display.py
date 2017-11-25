@@ -15,12 +15,7 @@ import math
 
 WIDTH = 500
 HEIGHT = 500
-n = 14
-rads = 6.28319  # 2 pi
-R = 100
-P = []  # list of points
-count = 0
-
+n = 6
 
 
 def main():
@@ -30,9 +25,13 @@ def main():
     graph = DGraph(g, win, WIDTH/2, HEIGHT/2)
     graph.draw()
 
+    comp = Player(1, g) # blue
+    comp.setStrats(['build', 'block'])
+
     # GAME LOOP
     while True:
         while True: # user's turn (TODO: TOGGLE WHO GOES FIRST)
+            #TODO: double click same node bug
             print("user turn")
             valid = False
             ans1, n1 = graph.isTouched(win.getMouse())
@@ -42,6 +41,8 @@ def main():
                     if ans2: # second click
                         e = graph.getEdge(n1,n2)
                         if e!=False and not e.isColored():
+                            # color the edge
+                            e.drawEdge(win, 0)
                             valid = True
                         else:
                             print("invalid edge")
@@ -49,14 +50,13 @@ def main():
             if valid: # else redo user loop
                 break
         print("computer turn")
-                        
-                    
-                    
-                    
-                
-
+        while True: # Computer's turn
+            #n1, n2 = graph.getRand() # get two available nodes
+            #e = graph.getEdge(n1,n2)
+            #graph.drawEdge(e,1)
+            comp.play()
+            break
             
-    
 
     # close window 
     win.getMouse()

@@ -12,7 +12,7 @@ from graphics import *
 import sys, os
 import random
 
-
+colors = ['red', 'blue']
 
 '''Node Class'''
 class Node:
@@ -66,6 +66,7 @@ class Edge:
         self.color = "black" # default
         self.L = [n1, n2]
         self.notColored = 1
+        self.line = None # line associated with edge
     def contains(self, x, y):
         '''Given two nodes'''
         if x in self.L and y in self.L:
@@ -88,6 +89,15 @@ class Edge:
     #Graphics
     def getPoints(self):
         return self.L[0].center, self.L[1].center
+    def setLine(self, line):
+        self.line = line
+    def getLine(self):
+        return self.line
+    def drawEdge(self, win, ID):
+        line = self.getLine()
+        line.undraw()
+        line.setFill(colors[ID])
+        line.draw(win)
                   
 '''Graph Class'''
 class Graph:
@@ -109,6 +119,7 @@ class Graph:
         self.unit = 0 # unit size; TODO: best default?
         self.check = 0
         self.strat = 0
+        self.win = None
         
         
         '''adds nodes specified'''
@@ -212,6 +223,8 @@ class Graph:
         for i in range(self.nNodes):
             self.addNode(i)
 #<------------------------------IN DEVELOPMENT-------------------------------->
+    def setWin(self, win):
+        self.win = win
     def winner(self):
         c1 = 0
         c2 = 0
