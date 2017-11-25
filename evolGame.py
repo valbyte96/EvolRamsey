@@ -1,9 +1,8 @@
+'''---------------------------------evolGame.py----------------------------------------
+evolution happens here'''
+
+'''---------------------------------IMPORTS----------------------------------------'''
 from __future__ import absolute_import, division, print_function
-'''evolGame.py
-This file ensures that game playing is working properly'''
-
-
-'''<<<<<<<<<<<<<<<<IMPORTS>>>>>>>>>>>>>>>>>'''
 import sys, os
 from Graph import *
 from Player import *
@@ -11,14 +10,15 @@ from Chromosome import *
 import random as rand
 sys.path.append(os.path.abspath('../pyevolve'))
 from pyevolve import *
-
-'''<<<<<<<<GLOBAL VARIABLES>>>>>>>>>'''
+'''----------------------------------GLOBALS----------------------------------------'''
 intervals = 2 # number of game intervals
 chrome = Chromosome(['build','block','random'],intervals).getStrats() # all possible chromosomes
 print(chrome)
 n = 6 # number of nodes
 g = Graph(n) # global graph
 new = False # boolean if want to create a new graph which each game
+
+'''----------------------------------EVOLUTION----------------------------------------'''
 
 '''Evolution for player 1: 'red' '''
 def play(strat):

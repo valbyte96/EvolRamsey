@@ -1,15 +1,16 @@
-''' Player.py
+'''---------------------------------Player.py----------------------------------------
 @author: Ted McCulloch
 @version: 10/21/17
 Class for implementing an iterative player, which will perform with
 consistent strategies. 
 '''
+'''----------------------------------IMPORTS----------------------------------------'''
 from __future__ import absolute_import, division, print_function
 import sys, os
 import random as rand
-
+'''----------------------------------GLOBALS----------------------------------------'''
 colorList = ["red", "blue"]
-
+'''-----------------------------------CLASS----------------------------------------'''
 class Player:
     def __init__(self, ID, graph):
         self.ID = ID
@@ -17,9 +18,7 @@ class Player:
         self.graph = graph
         self.color = colorList[ID]
         self.stratList = []
-
-
-    
+        
     def play(self):
         if self.strat == "block":
             self.block()
@@ -45,6 +44,10 @@ class Player:
         '''Responsible for initializing list of strategies as well as first strategy'''
         self.stratList = strats
         self.strat = strats[0]
+        
+'''----------------------------<<<STRATEGIES>>>----------------------------------------'''
+
+'''----------------------------------BUILD----------------------------------------'''
 
     def build(self): #very simple
         '''always build before anything else'''
@@ -62,7 +65,6 @@ class Player:
             e = sTri.getAvailable()
             e.setColor(self.color)
             e.drawEdge(self.graph.win, self.ID)
-            #DGraph.drawEdge(e, self.ID)
             self.graph.incColor()
         else:
             # try another strategy
@@ -71,6 +73,7 @@ class Player:
  #           self.tri1Strat()
             self.random()
     
+'''----------------------------------BLOCK----------------------------------------'''
 
     def block(self): #simple
         '''always block before anything else'''
@@ -87,6 +90,7 @@ class Player:
         if sTri!=[]:
             e = sTri.getAvailable()
             e.setColor(self.color)
+            e.drawEdge(self.graph.win, self.ID)
             self.graph.incColor()
         else:
             # try another strategy
@@ -95,7 +99,8 @@ class Player:
             self.tri1Strat()
             #self.random()
         
-        
+'''----------------------------------TRI1-----------------------------------------'''
+ #PHASE THIS OUT      
     def tri1Strat(self):
         '''Always color in the most "available" triangle
             Doesn't take into account color yet'''
@@ -112,14 +117,16 @@ class Player:
         if sTri!=[]:
             e = sTri.getAvailable()
             e.setColor(self.color)
+            e.drawEdge(self.graph.win, self.ID)
             self.graph.incColor()
         else:
-            #print("stopping condition")
+            print("stopping condition")
             self.graph.cCount = len(self.graph.edgeList)
                 
 
- # TODO COMMENT           
+'''----------------------------------RANDOM----------------------------------------'''
     def random(self):
+        '''selects a random edge to color'''
         b = 0
         full = False
         edges = self.graph.getEdges()
@@ -133,9 +140,11 @@ class Player:
                 full = True
                 break
         if full:
+            print("stopping condition")
             self.graph.cCount = len(self.graph.edgeList) # end
         else:
             rEdge = edges[r]
             rEdge.setColor(self.color)
+            rEdge.drawEdge(self.graph.win, self.ID)
             self.graph.incColor()
             

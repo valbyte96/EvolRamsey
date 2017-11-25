@@ -7,14 +7,14 @@ Graph.py contains three separate classes:
 >Graph
 
 '''
+'''---------------------------------IMPORTS----------------------------------------'''
 from __future__ import absolute_import, division, print_function
 from graphics import *
 import sys, os
 import random
-
+'''---------------------------------GLOBALS-----------------------------------------'''
 colors = ['red', 'blue']
-
-'''Node Class'''
+'''--------------------------------NODE CLASS-------------------------------------'''
 class Node:
     def __init__(self, ID):
         '''Constructor
@@ -24,7 +24,7 @@ class Node:
         self.ID = ID 
         self.neighbors = [] 
         self.visited = False
-        #GRAPHICS
+        '''<---for graphics--->'''
         self.center = None
         self.circle = None
         self.r = 5
@@ -39,13 +39,12 @@ class Node:
     def visit(self):
         '''marks node as visited'''
         self.visited = True
-    #GRAPHICS
+    '''<---for graphics--->'''
     def setCenter(self, point):
         self.center = point
         self.circle = Circle(point, self.r)
     def setColor(self, color):
-        self.color = color
-        
+        self.color = color        
     def draw(self, win):
         self.circle.setFill(self.color)
         self.circle.draw(win)
@@ -53,10 +52,7 @@ class Node:
         self.circle.setFill(self.color)
         self.circle.undraw()
         self.circle.draw(win)
-        
-        
-
-'''Edge Class'''
+'''--------------------------------EDGE CLASS-------------------------------------'''
 class Edge:
     def __init__(self, n1, n2):
         '''Constructor
@@ -86,20 +82,28 @@ class Edge:
             return False
         else:
             return True
-    #Graphics
+    '''<---for graphics--->'''
     def getPoints(self):
+        '''returns the two center points for nodes associated
+        with the edge'''
         return self.L[0].center, self.L[1].center
     def setLine(self, line):
+        '''@param line: line object
+        store the line associated with this edge'''
         self.line = line
     def getLine(self):
+        '''return the line associated with this edge'''
         return self.line
     def drawEdge(self, win, ID):
+        '''@params win, ID: window that edge is draw, player ID to specify color
+        function redraws edge with correct color'''
+        self.setColor(colors[ID]) # increments cCount and updates class params
         line = self.getLine()
         line.undraw()
         line.setFill(colors[ID])
         line.draw(win)
                   
-'''Graph Class'''
+'''--------------------------------GRAPH CLASS-------------------------------------'''
 class Graph:
     def __init__(self, nNodes):
         '''Constructor
@@ -222,10 +226,13 @@ class Graph:
         '''add in the specified nodes'''
         for i in range(self.nNodes):
             self.addNode(i)
-#<------------------------------IN DEVELOPMENT-------------------------------->
     def setWin(self, win):
+        '''param win: graphics window class
+        method stores/initializes graphics window'''
         self.win = win
+#<------------------------------IN DEVELOPMENT-------------------------------->
     def winner(self):
+        '''returns color of winner'''
         c1 = 0
         c2 = 0
         for t in self.triangles:
@@ -259,6 +266,8 @@ class Graph:
                 return e
         return False
     def getPercent(self):
+        '''returns the a number between 0 and 1; represents the percent
+        of edges colored. Method used for strategy switching'''
         return self.cCount/len(self.edgeList)
     
     def countT(self):
@@ -288,8 +297,7 @@ class Graph:
         
             
 
-'''Triangle Class'''           
-
+'''--------------------------------TRIANGLE CLASS-------------------------------------'''           
 class Triangle:
     '''Constructor'''
     def __init__(self, g, n1, n2, n3):
