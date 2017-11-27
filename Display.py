@@ -1,10 +1,10 @@
+from __future__ import absolute_import, division, print_function
 '''---------------------------------Display.py----------------------------------------
 @author: Ted McCulloch
 This code is meant to be ran when a human wants to play against and AI (evolved
 or not).
 '''
 '''---------------------------------IMPORTS----------------------------------------'''
-from __future__ import absolute_import, division, print_function
 import sys, os
 from Graph import *
 from DGraph import *

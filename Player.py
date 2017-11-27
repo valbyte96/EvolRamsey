@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 '''---------------------------------Player.py----------------------------------------
 @author: Ted McCulloch
 @version: 10/21/17
@@ -5,7 +6,6 @@ Class for implementing an iterative player, which will perform with
 consistent strategies. 
 '''
 '''----------------------------------IMPORTS----------------------------------------'''
-from __future__ import absolute_import, division, print_function
 import sys, os
 import random as rand
 '''----------------------------------GLOBALS----------------------------------------'''
@@ -45,10 +45,9 @@ class Player:
         self.stratList = strats
         self.strat = strats[0]
         
-'''----------------------------<<<STRATEGIES>>>----------------------------------------'''
+    '''----------------------------<<<STRATEGIES>>>----------------------------------------'''
 
-'''----------------------------------BUILD----------------------------------------'''
-
+    '''----------------------------------BUILD----------------------------------------'''
     def build(self): #very simple
         '''always build before anything else'''
         tri = self.graph.triangles
@@ -73,7 +72,7 @@ class Player:
  #           self.tri1Strat()
             self.random()
     
-'''----------------------------------BLOCK----------------------------------------'''
+    '''----------------------------------BLOCK----------------------------------------'''
 
     def block(self): #simple
         '''always block before anything else'''
@@ -99,7 +98,7 @@ class Player:
             self.tri1Strat()
             #self.random()
         
-'''----------------------------------TRI1-----------------------------------------'''
+    '''----------------------------------TRI1-----------------------------------------'''
  #PHASE THIS OUT      
     def tri1Strat(self):
         '''Always color in the most "available" triangle
@@ -124,7 +123,7 @@ class Player:
             self.graph.cCount = len(self.graph.edgeList)
                 
 
-'''----------------------------------RANDOM----------------------------------------'''
+    '''----------------------------------RANDOM----------------------------------------'''
     def random(self):
         '''selects a random edge to color'''
         b = 0

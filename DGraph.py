@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 '''---------------------------------DGraph.py----------------------------------------
 A wrapper class for the graph class.
 Considering phasing out and combining with the regular graph class.

@@ -1,14 +1,15 @@
+from __future__ import absolute_import, division, print_function
 ''' Graph.py
 @author: Ted McCulloch
-@version: 9/23/17
+@version: 11/27/17
 Graph.py contains three separate classes:
 >Node
 >Edge
 >Graph
+>Triangle
 
 '''
 '''---------------------------------IMPORTS----------------------------------------'''
-from __future__ import absolute_import, division, print_function
 from graphics import *
 import sys, os
 import random
