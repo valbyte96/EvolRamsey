@@ -18,8 +18,11 @@ def play():
     g.prep()
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
-    player1.setStrat("build") # based on chromosome 
-    player2.setStrat(strats[random.randint(0,2)]) # random or from zoo of opponents
+    player1.setStrats(strats) # set strats
+    player2.setStrats(strats)
+    player1.setStrat(0) # build
+    player2.setStrat(random.randint(0,2)) # random or from zoo of opponents
+
     r = 0 # debug
     while(True):
         if g.done(): # stop
@@ -42,10 +45,13 @@ def fitness(chromosome):
         score+=1.0
     return score
 
-
 def mainEvol():
     #TODO
     #genome - create a list of size of the number of 
     t=0
-    
 
+
+def main0():
+    print(play())
+
+main0()

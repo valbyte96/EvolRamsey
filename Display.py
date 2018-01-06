@@ -17,17 +17,22 @@ import math
 
 WIDTH = 500
 HEIGHT = 500
-n = 6
+n = 10
+strats = ['build', 'block','build','block','block','block','build']
 '''------------------------------------GAME----------------------------------------'''
 def main():
+
     '''<---initialize graph and computer--->'''
     g = Graph(n)
+    g.setInterval(len(strats))
     g.prep()
     win = GraphWin('Ramsey', WIDTH, HEIGHT)
     graph = DGraph(g, win, WIDTH/2, HEIGHT/2)
-    graph.draw()
+    #graph.drawCircle()
+    graph.drawRandom()
     comp = Player(1, g) # blue
-    comp.setStrats(['build', 'block','build'])
+    comp.setStrats(strats)
+    comp.onDisplay()
 
     '''<---play the game--->'''
     while True:
@@ -75,12 +80,4 @@ def main():
     win.getMouse()
     win.close()
     
-    
-    
-
-
-
-
-
-
 main()

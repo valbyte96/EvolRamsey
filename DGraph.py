@@ -9,6 +9,8 @@ import math
 import random as rand
 '''----------------------------------GLOBALS----------------------------------------'''
 colors = ['red', 'blue']
+WIDTH = 500 #TODO: import these? 
+HEIGHT = 500
 '''-----------------------------------CLASS----------------------------------------'''
 class DGraph:
     def __init__(self, graph, win, x, y):
@@ -54,7 +56,7 @@ class DGraph:
                 n.redraw(win)
                 return True, n
         return False, None
-    def draw(self):
+    def drawCircle(self):
         '''intial draw for graph. Also responsible for assigning lines
         to edges'''
         win = self.win
@@ -75,6 +77,47 @@ class DGraph:
             line.setFill('black')
             e.setLine(line) # store lines
             line.draw(win)
+    def drawRandom(self):
+        '''draws the nodes of a given graph randomly in the graph window
+        such that there is no overlap'''
+        win = self.win
+        coords = []
+        idx = 0 # starting index
+        b0 = 50 # buffer from the edges of window
+        b1 = 10 # buffer of nodes from each other
+        '''<---draw nodes--->'''
+        while(idx<len(self.nodes)):
+            viol = False
+            x = rand.randint(b0,WIDTH-b0)
+            y = rand.randint(b0,HEIGHT-b0)
+            for c in coords: # check this point is far enough from others
+                cX = c.getX()
+                cY = c.getY()
+                if math.fabs(cX-x)<b1 and math.fabs(cY-y)<b1:
+                    viol = True
+                    break
+            if viol:
+                continue
+            else:
+                n = self.nodes[idx]
+                n.setCenter(Point(x,y))
+                coords.append(Point(x,y))
+                idx+=1
+                n.draw(win)
+            
+        print("exited")
+        '''<---draw edges--->'''
+        for e in self.edges:
+            p1, p2 = e.getPoints()
+            line = Line(p1,p2)
+            line.setFill('black')
+            e.setLine(line) # store lines
+            line.draw(win)
+                    
+               
+            
+
+        
     def drawEdge(self, edge, team):
         '''params edge, team: specified edge to redraw, team's ID to specify color'''
         line = edge.getLine()

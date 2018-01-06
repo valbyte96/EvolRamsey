@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function
-''' Graph.py
+'''
+Graph.py
 @author: Ted McCulloch
 @version: 11/27/17
 Graph.py contains three separate classes:
@@ -7,7 +8,6 @@ Graph.py contains three separate classes:
 >Edge
 >Graph
 >Triangle
-
 '''
 '''---------------------------------IMPORTS----------------------------------------'''
 from graphics import *
@@ -119,13 +119,12 @@ class Graph:
         self.edgeList  = []
         self.triangles = []
         self.cCount = 0
-        self.intervals = 3 # default to three
+        self.intervals = 2 # default to three
         self.verbose = 0
         self.unit = 0 # unit size; TODO: best default?
         self.check = 0
         self.strat = 0
         self.win = None
-        
         
         '''adds nodes specified'''
         for i in range(nNodes):
@@ -136,12 +135,15 @@ class Graph:
         self.countT()
         self.unit = self.getNumEdges()/self.intervals
         self.check = self.unit
-    def check(self, p1, p2):
+    def checkInterval(self, p1, p2):
         if self.cCount >=self.check:
             self.check+=self.unit
             self.strat+=1
-            p1.setStrat(self.strat)
-            p2.setStrat(self.strat)     
+            # switch strategies unless it's the one unit after final
+            # NOTE: if it is more than one unit it will throw a warning
+            if not int(self.check-self.unit)==len(self.edgeList):
+                p1.setStrat(self.strat)
+                p2.setStrat(self.strat)     
     def setInterval(self, n):
         '''setter method for number of intervals'''
         self.intervals = n

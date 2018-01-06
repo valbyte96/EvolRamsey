@@ -1,35 +1,34 @@
 from __future__ import absolute_import, division, print_function
-'''---------------------------------Player.py----------------------------------------
+'''---------------------------------Player.py-----------------------------------
 @author: Ted McCulloch
 @version: 10/21/17
 Class for implementing an iterative player, which will perform with
 consistent strategies. 
 '''
-'''----------------------------------IMPORTS----------------------------------------'''
+'''----------------------------------IMPORTS-----------------------------------'''
 import sys, os
 import random as rand
-'''----------------------------------GLOBALS----------------------------------------'''
+'''----------------------------------GLOBALS-----------------------------------'''
 colorList = ["red", "blue"]
-'''-----------------------------------CLASS----------------------------------------'''
+'''-----------------------------------CLASS------------------------------------'''
 class Player:
     def __init__(self, ID, graph):
         self.ID = ID
         self.strat = "random" # default to random
         self.graph = graph
         self.color = colorList[ID]
-        self.stratList = []
+        self.stratList = ["random"] # default to random
+        self.display = False # assume no display
         
     def play(self):
         if self.strat == "block":
             self.block()
         elif self.strat == "build":
             self.build()
-        elif self.strat == "tri1":
-            self.tri1Strat()
         elif self.strat == "random":
             self.random()
         else:
-            if self.graph.verbose>0:
+            if self.graph.verbose>-1: # TODO calibrate 
                 print("Warning: strategy doesn't exist")
             self.random()
             
@@ -38,14 +37,18 @@ class Player:
             self.strat = self.stratList[num]
         else:
             print("warning: id number greater than interval number")
+            print(num)
             self.strat = self.stratList[0]
 
     def setStrats(self, strats):
         '''Responsible for initializing list of strategies as well as first strategy'''
         self.stratList = strats
         self.strat = strats[0]
+    def onDisplay(self):
+        '''call on non-user player if you want moves to display in gui'''
+        self.display = True
         
-    '''----------------------------<<<STRATEGIES>>>----------------------------------------'''
+    '''------------------------<<<STRATEGIES>>>-----------------------------------'''
 
     '''----------------------------------BUILD----------------------------------------'''
     def build(self): #very simple
@@ -63,13 +66,13 @@ class Player:
         if sTri!=[]:
             e = sTri.getAvailable()
             e.setColor(self.color)
-            e.drawEdge(self.graph.win, self.ID)
+            if self.display:
+                e.drawEdge(self.graph.win, self.ID)
             self.graph.incColor()
         else:
             # try another strategy
             if self.graph.verbose>0:
                 print("build -> random")
- #           self.tri1Strat()
             self.random()
     
     '''----------------------------------BLOCK----------------------------------------'''
@@ -89,40 +92,15 @@ class Player:
         if sTri!=[]:
             e = sTri.getAvailable()
             e.setColor(self.color)
-            e.drawEdge(self.graph.win, self.ID)
+            if self.display:
+                e.drawEdge(self.graph.win, self.ID)
             self.graph.incColor()
         else:
             # try another strategy
             if self.graph.verbose>0:
-                print("block -> tri1")
-            self.tri1Strat()
-            #self.random()
+                print("block -> build")
+            self.build()
         
-    '''----------------------------------TRI1-----------------------------------------'''
- #PHASE THIS OUT      
-    def tri1Strat(self):
-        '''Always color in the most "available" triangle
-            Doesn't take into account color yet'''
-        tri = self.graph.triangles
-        s = -10
-        sTri = []
-        
-        for t in tri:
-            if not t.isFull():
-                n = t.available() #
-                if n>s:
-                    s = n
-                    sTri = t # save triangle
-        if sTri!=[]:
-            e = sTri.getAvailable()
-            e.setColor(self.color)
-            e.drawEdge(self.graph.win, self.ID)
-            self.graph.incColor()
-        else:
-            print("stopping condition")
-            self.graph.cCount = len(self.graph.edgeList)
-                
-
     '''----------------------------------RANDOM----------------------------------------'''
     def random(self):
         '''selects a random edge to color'''
@@ -144,6 +122,7 @@ class Player:
         else:
             rEdge = edges[r]
             rEdge.setColor(self.color)
-            rEdge.drawEdge(self.graph.win, self.ID)
+            if self.display:
+                rEdge.drawEdge(self.graph.win, self.ID)
             self.graph.incColor()
             
