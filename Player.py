@@ -37,7 +37,7 @@ class Player:
             self.strat = self.stratList[num]
         else:
             print("warning: id number greater than interval number")
-            print(num)
+            print("suggested index:",num)
             self.strat = self.stratList[0]
 
     def setStrats(self, strats):
