@@ -21,16 +21,21 @@ class Player:
         self.display = False # assume no display
         
     def play(self):
-        if self.strat == "block":
-            self.block()
-        elif self.strat == "build":
-            self.build()
-        elif self.strat == "random":
-            self.random()
+        # TODO: if edges colored == 0 then do this else everything else
+        if self.graph.cCount == 0:
+            print("first")
+            self.random() # TODO: come up with a self.first() strategy
         else:
-            if self.graph.verbose>-1: # TODO calibrate 
-                print("Warning: strategy doesn't exist")
-            self.random()
+            if self.strat == "block":
+                self.block()
+            elif self.strat == "build":
+                self.build()
+            elif self.strat == "random":
+                self.random()
+            else:
+                if self.graph.verbose>-1: # TODO calibrate 
+                    print("Warning: strategy doesn't exist")
+                self.random()
             
     def setStrat(self, num):
         if num<len(self.stratList):
@@ -49,6 +54,8 @@ class Player:
         self.display = True
         
     '''------------------------<<<STRATEGIES>>>-----------------------------------'''
+    
+
 
     '''----------------------------------BUILD----------------------------------------'''
     def build(self): #very simple

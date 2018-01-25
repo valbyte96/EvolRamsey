@@ -34,27 +34,44 @@ def play(chromosome):
     player2 = Player(1, g) # blue
     
     player1.setStrats(strats) # set strat list as well as initial strategy
-    #player2.setStrats(p2Chrome[random.randint(0,len(p2Chrome)-1)])
+    player2.setStrats(p2Chrome[random.randint(0,len(p2Chrome)-1)])
     #player2.setStrats(['build','build', 'build', 'build', 'build'])
     #player2.setStrats(['block','block', 'block', 'block', 'block'])
-    player2.setStrats(['random','random', 'random', 'random', 'random'])
+    #player2.setStrats(['random','random', 'random', 'random', 'random'])
     
     r = 0 # debug
     unit = g.getNumEdges()/intervals
+
+    # randomizes who goes first
+    first = rand.randint(0,1)
     
     
     while(True):
-        if g.done(): # stop
-            break
-        player1.play()
-        g.checkInterval(player1, player2)
-            
-        if g.done(): # stop
-            break
+        if first==0: # player 1 goes first
+            if g.done(): # stop
+                break
+            player1.play()
+            g.checkInterval(player1, player2)
+                
+            if g.done(): # stop
+                break
 
-        player2.play()
-        g.checkInterval(player1, player2)
-        r+=1 # debug
+            player2.play()
+            g.checkInterval(player1, player2)
+            r+=1 # debug
+
+        else: # player 2 goes first
+            if g.done(): # stop
+                break
+            player2.play()
+            g.checkInterval(player1, player2)
+                
+            if g.done(): # stop
+                break
+
+            player1.play()
+            g.checkInterval(player1, player2)
+            r+=1 # debug
 
     return g.winner()
 
@@ -80,5 +97,5 @@ def mainEvol():
     ga.evolve(freq_stats=5)
     print(ga.bestIndividual())
 
-mainEvol()
-#testMain()
+#mainEvol()
+testMain()
