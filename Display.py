@@ -28,8 +28,8 @@ def main():
     g.prep()
     win = GraphWin('Ramsey', WIDTH, HEIGHT)
     graph = DGraph(g, win, WIDTH/2, HEIGHT/2)
-    #graph.drawCircle()
-    graph.drawRandom()
+    graph.drawCircle()
+    #graph.drawRandom()
     comp = Player(1, g) # blue
     comp.setStrats(strats)
     comp.onDisplay()

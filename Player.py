@@ -23,7 +23,6 @@ class Player:
     def play(self):
         # TODO: if edges colored == 0 then do this else everything else
         if self.graph.cCount == 0:
-            print("first")
             self.random() # TODO: come up with a self.first() strategy
         else:
             if self.strat == "block":
