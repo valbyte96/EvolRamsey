@@ -286,6 +286,24 @@ class Graph:
         '''add in the specified nodes'''
         for i in range(self.nNodes):
             self.addNode(i)
+    def resetFixed(self):
+        nodes = self.nodeList
+        edges = self.edgeList
+        # node variables
+        for n in nodes:
+            n.visited = False
+            n.color = "black"
+        # edge variables
+        for e in edges:
+            e.notColored = 1
+            e.color = "black"
+        # graph variables
+        self.cCount = 0
+        self.strat = 0
+        self.check = self.unit
+
+        
+        '''given a fixed graph, reset all necessary properies '''
     def setWin(self, win):
         '''param win: graphics window class
         method stores/initializes graphics window'''

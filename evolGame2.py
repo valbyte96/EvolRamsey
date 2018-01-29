@@ -14,7 +14,14 @@ sys.path.append(os.path.abspath('../pyevolve'))
 from pyevolve import *
 '''----------------------------------GLOBALS----------------------------------------'''
 intervals = 5 # number of game intervals
-n = 20 # number of nodes
+n = 10 # number of nodes
+
+# incase fixed
+fixed = True
+g = Graph(n)
+g.setInterval(intervals)
+g.prep() # reset graph and prep triangles
+
 chrome = ['build','block','random']
 p2Chrome = Chromosome(['build','block','random'],intervals).getStrats() # all possible chromosomes
 
@@ -26,10 +33,10 @@ def play(chromosome):
     strats = []
     for c in chromosome:
         strats.append(chrome[c])
-    g = Graph(n)
-    g.setInterval(intervals)
-    g = Graph(n) 
-    g.prep() # reset graph and prep triangles
+    if fixed:
+        g.resetFixed()
+    else:
+        g.prep() # reset graph and prep triangles
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
     
@@ -97,5 +104,5 @@ def mainEvol():
     ga.evolve(freq_stats=5)
     print(ga.bestIndividual())
 
-#mainEvol()
-testMain()
+mainEvol()
+#testMain()

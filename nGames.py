@@ -17,18 +17,22 @@ n = 7 # number of nodes
 chrome = ['build','block','random']
 p2Chrome = Chromosome(['build','block','random'],intervals).getStrats() # all possible chromosomes
 
-#g = Graph(n) # global graph
+# incase fixed
+fixed = True
+g = Graph(n)
+g.setInterval(intervals)
+g.prep() # reset graph and prep triangles
+
 '''----------------------------------EVOLUTION----------------------------------------'''
 
-def playOnFixed():
-    print("TODO")
+
 
 def play(chromosome):
-
-    g = Graph(n)
-    g.setInterval(intervals)
-    g = Graph(n) 
-    g.prep() # reset graph and prep triangles
+    '''this play function randomizes the graph every game'''
+    if fixed:
+        g.resetFixed()
+    else:
+        g.prep() # reset graph and prep triangles
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
     
@@ -77,7 +81,8 @@ def play(chromosome):
 
 
 def main():
-    n = 20 # number of games to play
+    '''Every game played on a new random graph on n nodes'''
+    nGames = 20 # number of games to play
     p1Wins = 0
     p2Wins = 0
     ties = 0
@@ -94,17 +99,21 @@ def main():
             p2Wins+=1
         else:
             ties+=1
+    output(p1Wins, p2Wins, ties, nGames)
+
+
+def output(p1Wins, p2Wins, ties, nGames):
+    '''Out puts information about the games played'''
     print("player 1")
     print("total wins:", p1Wins)
-    print("win percent:", p1Wins/n*100)
+    print("win percent:", p1Wins/nGames*100)
     print()
     print("player 2")
     print("total wins:", p2Wins)
-    print("win percent:", p2Wins/n*100)
+    print("win percent:", p2Wins/nGames*100)
     print()
     print("ties:",ties)
-    print("win percent:", ties/n*100)
-
-
+    print("win percent:", ties/nGames*100)
+    
 
 main()
