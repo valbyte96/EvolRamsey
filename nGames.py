@@ -33,7 +33,8 @@ def play(chromosome):
     player2 = Player(1, g) # blue
     
     player1.setStrats(chromosome) # set strat list as well as initial strategy
-    player2.setStrats(p2Chrome[random.randint(0,len(p2Chrome)-1)])
+    #player1.setStrats(p2Chrome[random.randint(0,len(p2Chrome)-1)])
+    #player2.setStrats(p2Chrome[random.randint(0,len(p2Chrome)-1)])
     player2.setStrats(['random', 'random','random','random','random'])
     
     r = 0 # debug
@@ -79,7 +80,8 @@ def main():
     n = 20 # number of games to play
     p1Wins = 0
     p2Wins = 0
-    chromosome = [0, 0, 0, 0, 0]
+    ties = 0
+    chromosome = [1, 1, 1, 1, 1]
     strats = []
     for c in chromosome:
         strats.append(chrome[c])
@@ -88,15 +90,20 @@ def main():
         win = play(strats)
         if win == "red":
             p1Wins+=1
-        else:
+        elif win == "blue":
             p2Wins+=1
+        else:
+            ties+=1
     print("player 1")
     print("total wins:", p1Wins)
-    print("win percent:", p1Wins/n)
+    print("win percent:", p1Wins/n*100)
     print()
     print("player 2")
     print("total wins:", p2Wins)
-    print("win percent:", p2Wins/n)
+    print("win percent:", p2Wins/n*100)
+    print()
+    print("ties:",ties)
+    print("win percent:", ties/n*100)
 
 
 
