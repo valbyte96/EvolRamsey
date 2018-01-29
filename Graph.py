@@ -75,7 +75,7 @@ class Edge:
         nComplete = 0
         score = 0
         for t in self.triangles:
-            if not t.isFull() and t.singleC(color) and self.notColored==0:
+            if not t.isFull() and t.singleC(color) and self.notColored==1:
                 n = t.nColored()
                 # 3 options: empty, 1 edge, and 2 edges
                 # empty +1
@@ -100,7 +100,7 @@ class Edge:
         score = 0
 
         for t in self.triangles:
-            if not t.isFull() and t.antiSingleC(color):
+            if not t.isFull() and t.antiSingleC(color) and self.notColored==1:
                 n = t.nColored()
                 # 3 options: empty, 1 edge, and 2 edges
                 # empty +1

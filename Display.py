@@ -18,7 +18,7 @@ import math
 WIDTH = 500
 HEIGHT = 500
 n = 5
-strats = ['build','build','build','build','build']
+strats = ['block','block','block','block','block']
 '''------------------------------------GAME----------------------------------------'''
 def main():
 

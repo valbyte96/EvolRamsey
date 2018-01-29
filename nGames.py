@@ -81,7 +81,7 @@ def main():
     p1Wins = 0
     p2Wins = 0
     ties = 0
-    chromosome = [1, 1, 1, 1, 1]
+    chromosome = [0, 0, 0, 0, 0]
     strats = []
     for c in chromosome:
         strats.append(chrome[c])
