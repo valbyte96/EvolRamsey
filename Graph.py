@@ -64,11 +64,55 @@ class Edge:
         self.L = [n1, n2]
         self.notColored = 1
         self.line = None # line associated with edge
+        self.triangles = []
     def contains(self, x, y):
         '''Given two nodes'''
         if x in self.L and y in self.L:
             return True
         return False
+    def getScoreBuild(self, color):
+        '''computes score for this edge for Build strategy'''
+        nComplete = 0
+        score = 0
+        for t in self.triangles:
+            if not t.isFull() and t.singleC(color) and self.notColored==0:
+                n = t.nColored()
+                # 3 options: empty, 1 edge, and 2 edges
+                # empty +1
+                if n==0:
+                    score+=1
+                # one edge +2
+                elif n == 1:
+                    score+=5
+                # 2 edges +20 (TODO: adjust?)
+                elif n == 2:
+                    score+=25
+        return score
+
+                
+                
+            
+        
+        return score, nComplete # TODO
+    def getScoreBlock(self, color):
+        '''computes score for this edge for Block strategy'''
+        nComplete = 0
+        score = 0
+
+        for t in self.triangles:
+            if not t.isFull() and t.antiSingleC(color):
+                n = t.nColored()
+                # 3 options: empty, 1 edge, and 2 edges
+                # empty +1
+                if n==0:
+                    score+=1
+                # one edge +2
+                elif n == 1:
+                    score+=5
+                # 2 edges +20 (TODO: adjust?)
+                elif n == 2:
+                    score+=25
+        return score
     def getColor(self):
         '''returns current color'''
         return self.color
@@ -83,6 +127,8 @@ class Edge:
             return False
         else:
             return True
+    def addTri(self, tri):
+        self.triangles.append(tri)
     '''<---for graphics--->'''
     def getPoints(self):
         '''returns the two center points for nodes associated
@@ -189,6 +235,17 @@ class Graph:
             if e.contains(n1,n2):
                 b = True
         return b
+    def isAndGetEdge(self, n1, n2):
+        '''@param n1,n2: distinct nodes
+        method indicates if an edge exists between these two nodes
+        returns boolean and then '''
+        b = False
+        edge = None
+        for e in self.edgeList: # HASHMAP?
+            if e.contains(n1,n2):
+                b = True
+                edge = e
+        return b, edge
     def getNumEdges(self):
         '''method returns the number of edges in this graph'''
         return len(self.edgeList)
@@ -281,18 +338,26 @@ class Graph:
             >O(n^3)
             >Look into optimizing this'''
         T = [] # prevents overcounting
-        for e in self.edgeList:
-            x = e.L[0]
-            y = e.L[1]
+        for e0 in self.edgeList:
+            x = e0.L[0]
+            y = e0.L[1]
             for n in self.nodeList:
+                b1, e1 = self.isAndGetEdge(x,n)
+                b2, e2 = self.isAndGetEdge(y,n)
                 if n==x or n==y:
                     continue
-                elif self.isEdge(x,n) and self.isEdge(y,n):
+                elif b1 and b2 :
                     L = [x, y, n]
                     L.sort()
                     if L not in T:
                         T.append(L)
-                        self.triangles.append(Triangle(self, x,y,n))
+                        newTri = Triangle(self, x,y,n)
+                        # record triangle for global list
+                        self.triangles.append(newTri)
+                        # record triangle for each edge
+                        e0.addTri(newTri)
+                        e1.addTri(newTri)
+                        e2.addTri(newTri)
         if self.verbose>0:
             print(len(self.triangles))
     
@@ -321,6 +386,12 @@ class Triangle:
             if e.color != c:
                 return False
         return True
+    def nColored(self):
+        count = 0
+        for e in self.edges:
+            if e.color!="black":
+                count+=1
+        return count
     def singleC(self, color):
         '''Method returns True if a triangle is only color and black'''
         for e in self.edges:

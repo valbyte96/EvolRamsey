@@ -20,6 +20,9 @@ p2Chrome = Chromosome(['build','block','random'],intervals).getStrats() # all po
 #g = Graph(n) # global graph
 '''----------------------------------EVOLUTION----------------------------------------'''
 
+def playOnFixed():
+    print("TODO")
+
 def play(chromosome):
 
     g = Graph(n)
@@ -31,6 +34,7 @@ def play(chromosome):
     
     player1.setStrats(chromosome) # set strat list as well as initial strategy
     player2.setStrats(p2Chrome[random.randint(0,len(p2Chrome)-1)])
+    player2.setStrats(['random', 'random','random','random','random'])
     
     r = 0 # debug
     unit = g.getNumEdges()/intervals
@@ -75,7 +79,7 @@ def main():
     n = 20 # number of games to play
     p1Wins = 0
     p2Wins = 0
-    chromosome = [2,2,2,2,2]
+    chromosome = [0, 0, 0, 0, 0]
     strats = []
     for c in chromosome:
         strats.append(chrome[c])

@@ -26,9 +26,9 @@ class Player:
             self.random() # TODO: come up with a self.first() strategy
         else:
             if self.strat == "block":
-                self.move()
+                self.block()
             elif self.strat == "build":
-                self.move()
+                self.build()
             elif self.strat == "random":
                 self.random()
             else:
@@ -80,36 +80,8 @@ class Player:
             if self.graph.verbose>0:
                 print("build -> random")
             self.random()
-    '''----------------------------------MOVE----------------------------------------'''
     
-    def move(self):
-        edges = self.graph.edgeList
-        hScore = -1 # high score
-        score = -1 # necessary?
-        nComplete = -1
-        sEdge = None # saved edge
-        '''loop through all edges'''
-        for e in edges:
-            if e.notColored == 0:
-                continue
-            if self.strat == 'build':
-                score = e.getScoreBuild(self.color)
-            elif self.strat == 'block':
-                score = e.getScoreBlock(self.color)
-            if score>hScore:
-                hScore = score
-                sEdge = e
-        if sEdge!=None:
-            sEdge.setColor(self.color)
-            if self.display:
-                sEdge.drawEdge(self.graph.win, self.ID)
-            self.graph.incColor()
-                
-        else:
-            #print("todo: go to new build")
-            self.random()
     '''----------------------------------BLOCK----------------------------------------'''
-        
 
     def block(self): #simple
         '''always block before anything else'''
