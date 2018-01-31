@@ -25,9 +25,8 @@ class Player:
         if self.graph.cCount == 0:
             self.random() # TODO: come up with a self.first() strategy
         else:
-            if self.strat == "block":
-                self.move()
-            elif self.strat == "build":
+            s = self.strat
+            if s == "block" or s == "build" or s == "adv-build" or s == "adv-block":
                 self.move()
             elif self.strat == "random":
                 self.random()
@@ -84,9 +83,8 @@ class Player:
     
     def move(self):
         edges = self.graph.edgeList
-        hScore = -1 # high score
-        score = -1 # necessary?
-        nComplete = -1
+        hScore = 0 # high score
+        score = 0 # necessary?
         sEdge = None # saved edge
         '''loop through all edges'''
         for e in edges:
@@ -96,6 +94,10 @@ class Player:
                 score = e.getScoreBuild(self.color)
             elif self.strat == 'block':
                 score = e.getScoreBlock(self.color)
+            elif self.strat == 'adv-build':
+                score = e.getScoreAdvBuild(self.color)
+            elif self.strat == 'adv-block':
+                score = e.getScoreAdvBlock(self.color)
             if score>hScore:
                 hScore = score
                 sEdge = e
@@ -106,7 +108,7 @@ class Player:
             self.graph.incColor()
                 
         else:
-            #print("todo: go to new build")
+            # if all edges are same choose one at random
             self.random()
     '''----------------------------------BLOCK----------------------------------------'''
         

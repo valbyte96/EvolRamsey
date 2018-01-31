@@ -72,47 +72,78 @@ class Edge:
         return False
     def getScoreBuild(self, color):
         '''computes score for this edge for Build strategy'''
-        nComplete = 0
         score = 0
         for t in self.triangles:
             if not t.isFull() and t.singleC(color) and self.notColored==1:
                 n = t.nColored()
                 # 3 options: empty, 1 edge, and 2 edges
-                # empty +1
-                if n==0:
-                    score+=1
-                # one edge +2
-                elif n == 1:
+                if n==0: # empty +1
+                    score+=1               
+                elif n == 1: # one edge +5
                     score+=5
-                # 2 edges +20 (TODO: adjust?)
-                elif n == 2:
+                elif n == 2: # 2 edges +25 (TODO: adjust?)
                     score+=25
         return score
-
-                
+    
+    def getScoreAdvBuild(self, color):
+        score = 0
+        for t in self.triangles:
+            if not t.isFull() and t.singleC(color) and self.notColored==1:
+                n = t.nColored()
+                # 3 options: empty, 1 edge, and 2 edges
+                if n==0: # empty +1
+                    score+=1               
+                elif n == 1: # one edge +5
+                    score+=5
+                elif n == 2: # 2 edges +25 (TODO: adjust?)
+                    score+=25
+            elif not t.isFull() and t.antiSingleC(color) and self.notColored==1:
+                n = t.nColored()               
+                if n == 1: # one edge +2.5
+                    score+=2
+                elif n == 2: # 2 edges +10 (TODO: adjust?)
+                    score+=4
+        return score
                 
             
         
-        return score, nComplete # TODO
     def getScoreBlock(self, color):
         '''computes score for this edge for Block strategy'''
-        nComplete = 0
         score = 0
-
         for t in self.triangles:
             if not t.isFull() and t.antiSingleC(color) and self.notColored==1:
                 n = t.nColored()
-                # 3 options: empty, 1 edge, and 2 edges
-                # empty +1
-                if n==0:
+                # 3 options: empty, 1 edge, and 2 edges               
+                if n==0: # empty +1
                     score+=1
-                # one edge +2
-                elif n == 1:
+                elif n == 1: # one edge +5
                     score+=5
-                # 2 edges +20 (TODO: adjust?)
-                elif n == 2:
+                elif n == 2: # 2 edges +25
                     score+=25
         return score
+
+
+    def getScoreAdvBlock(self, color):
+        '''scores blocking strategy and also'''
+        score = 0
+        for t in self.triangles:
+            if not t.isFull() and t.antiSingleC(color):
+                n = t.nColored()
+                # 3 options: empty, 1 edge, and 2 edges               
+                if n==0: # empty +1
+                    score+=1
+                elif n == 1: # one edge +5
+                    score+=5
+                elif n == 2: # 2 edges +25
+                    score+=25
+            elif not t.isFull() and t.singleC(color):
+                n = t.nColored()               
+                if n == 1: # one edge +2.5
+                    score+=2
+                elif n == 2: # 2 edges +10 (TODO: adjust?)
+                    score+=4
+        return score
+    
     def getColor(self):
         '''returns current color'''
         return self.color

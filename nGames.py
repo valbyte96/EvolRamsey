@@ -14,8 +14,8 @@ from pyevolve import *
 '''----------------------------------GLOBALS----------------------------------------'''
 intervals = 5 # number of game intervals
 n = 7 # number of nodes
-chrome = ['build','block','random']
-p2Chrome = Chromosome(['build','block','random'],intervals).getStrats() # all possible chromosomes
+chrome = ['build','block', 'adv-build', 'adv-block', 'random']
+p2Chrome = Chromosome(['build','block', 'adv-build', 'adv-block', 'random'],intervals).getStrats() # all possible chromosomes
 
 # incase fixed
 fixed = True
@@ -86,7 +86,7 @@ def main():
     p1Wins = 0
     p2Wins = 0
     ties = 0
-    chromosome = [0, 0, 0, 0, 0]
+    chromosome = [3, 3, 3, 3, 3]
     strats = []
     for c in chromosome:
         strats.append(chrome[c])
