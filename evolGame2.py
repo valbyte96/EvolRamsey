@@ -13,19 +13,17 @@ import random as rand
 sys.path.append(os.path.abspath('../pyevolve'))
 from pyevolve import *
 '''----------------------------------GLOBALS----------------------------------------'''
-intervals = 5 # number of game intervals
+intervals = 3 # number of game intervals
 n = 10 # number of nodes
 
 # incase fixed
-fixed = True
+fixed = False
 g = Graph(n)
 g.setInterval(intervals)
 g.prep() # reset graph and prep triangles
 
-chrome = ['build','block','random']
-p2Chrome = Chromosome(['build','block','random'],intervals).getStrats() # all possible chromosomes
-
-#g = Graph(n) # global graph
+chrome = ['build','block','adv-build', 'adv-block','random']
+p2Chrome = Chromosome(['build','block','adv-build','adv-block','random'],intervals).getStrats() # all possible chromosomes
 '''----------------------------------EVOLUTION----------------------------------------'''
 
 '''Evolution for player 1: 'red' '''
@@ -92,7 +90,7 @@ def evalFunc(chromosome):
 
 
 def testMain():
-    print(play([2,2,2,2]))
+    print(play([2,2,2]))
 
 
 def mainEvol():
@@ -101,7 +99,7 @@ def mainEvol():
     genome.setParams(rangemin=0, rangemax=len(chrome)-1) #set range for numbers
     ga = GSimpleGA.GSimpleGA(genome)
     ga.setGenerations(10)
-    ga.evolve(freq_stats=5)
+    ga.evolve(freq_stats=10)
     print(ga.bestIndividual())
 
 mainEvol()

@@ -18,7 +18,7 @@ chrome = ['build','block', 'adv-build', 'adv-block', 'random']
 p2Chrome = Chromosome(['build','block', 'adv-build', 'adv-block', 'random'],intervals).getStrats() # all possible chromosomes
 
 # incase fixed
-fixed = True
+fixed = False
 g = Graph(n)
 g.setInterval(intervals)
 g.prep() # reset graph and prep triangles

@@ -313,7 +313,8 @@ class Graph:
         '''removes all edges and readds nodes to reset to blank graph'''
         del self.nodeList[:]
         del self.edgeList[:]
-        self.cCount = 0 
+        self.cCount = 0
+        self.strat = 0
         '''add in the specified nodes'''
         for i in range(self.nNodes):
             self.addNode(i)
