@@ -12,18 +12,27 @@ from Chromosome import *
 import random as rand
 sys.path.append(os.path.abspath('../pyevolve'))
 from pyevolve import *
-'''----------------------------------GLOBALS----------------------------------------'''
+'''----------------------------------GAME GLOBALS----------------------------------------'''
 intervals = 5 # number of game intervals
-n = 15 # number of nodes
 
+chrome = ['build','block','adv-build', 'adv-block','random']
+p2Chrome = Chromosome(['build','block','adv-build','adv-block','random'],intervals).getStrats() # all possible chromosomes
+
+
+
+'''----------------------------------GRAPH GLOBALS----------------------------------------'''
+
+
+n = 15 # number of nodes
 # incase fixed
 fixed = True # make is much quicker
 g = Graph(n)
 g.setInterval(intervals)
 g.prep() # reset graph and prep triangles
 
-chrome = ['build','block','adv-build', 'adv-block','random']
-p2Chrome = Chromosome(['build','block','adv-build','adv-block','random'],intervals).getStrats() # all possible chromosomes
+
+
+
 '''----------------------------------EVOLUTION----------------------------------------'''
 
 '''Evolution for player 1: 'red' '''
@@ -39,6 +48,7 @@ def play(chromosome):
     player2 = Player(1, g) # blue
     
     player1.setStrats(strats) # set strat list as well as initial strategy
+    #player1.setStrats(p2Chrome[random.randint(0,len(p2Chrome)-1)])
     player2.setStrats(p2Chrome[random.randint(0,len(p2Chrome)-1)])
     
     r = 0 # debug
@@ -79,6 +89,7 @@ def play(chromosome):
 
 #    
 def evalFunc(chromosome):
+    best.append(ga.bestIndividual()) # record best individual at fitness call
     score = 0.0
     for g in range(10):
         result = play(chromosome)
@@ -88,20 +99,58 @@ def evalFunc(chromosome):
 
 
 def testMain():
-    print(play([2,2,2]))
+    ran = lambda upper: random.randint(0,upper)
+    x = len(chrome)-1
+    for i in range(100):
+        play([ran(x),ran(x),ran(x),ran(x),ran(x)])
+        
 
+def edit(string):
+    idx = string.find("List:		 ")+9 # find index of first [
+    idx2 = string[idx:].find("]")
+    nString = string[idx:idx+idx2]
+    return nString.replace(" ","").split(",")
+
+
+def getBest():
+    short = []
+    #for i in range(popSize-1,(nGens+1)*popSize,popSize):
+    for i in range((nGens+1)*popSize):
+        if i%(popSize)==(popSize-1):
+            s = edit(str(best[i]))
+            short.append(s)
+    return short
 
 def mainEvol():
     genome = G1DList.G1DList(intervals) # create random list of numbers
     genome.evaluator.set(evalFunc) #pass in fitness function
     genome.setParams(rangemin=0, rangemax=len(chrome)-1) #set range for numbers
+    global ga
+    global best
+    global popSize
+    global nGens
+    
+    
+    best = []
+    popSize = 100
+    nGens = 15
+    #genome.crossover.set(Crossovers.G1DListCrossoverUniform)
+    genome.crossover.set(Crossovers.G1DListCrossoverTwoPoint)
+    genome.mutator.set(Mutators.G1DListMutatorSwap)
     ga = GSimpleGA.GSimpleGA(genome)
-    ga.setPopulationSize(4) # defaults to 80
-    ga.setGenerations(10)
+
+    ga.setPopulationSize(popSize) # defaults to 80
+    ga.setGenerations(nGens) # nGens + 1
     ga.evolve(freq_stats=10)
-    #print(ga.getPopulation())
+
+    short = getBest()
+    print(short)
+
+            
+
+
     #print(ga.bestIndividual())
     #print(genome)
 
-mainEvol()
-#testMain()
+#mainEvol()
+testMain()

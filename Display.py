@@ -17,7 +17,7 @@ import math
 
 WIDTH = 500
 HEIGHT = 500
-n = 5
+n = 10
 #strats = ['adv-block','adv-block','adv-block','adv-block','adv-block']
 strats = ['adv-build','adv-build','adv-build','adv-build','adv-build']
 '''------------------------------------GAME----------------------------------------'''
@@ -29,8 +29,8 @@ def main():
     g.prep()
     win = GraphWin('Ramsey', WIDTH, HEIGHT)
     graph = DGraph(g, win, WIDTH/2, HEIGHT/2)
-    graph.drawCircle()
-    #graph.drawRandom()
+#    graph.drawCircle()
+    graph.drawRandom()
     comp = Player(1, g) # blue
     comp.setStrats(strats)
     comp.onDisplay()
