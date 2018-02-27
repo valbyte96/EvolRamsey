@@ -6,6 +6,7 @@ Different approach to evolution that evolGame.py
 
 '''---------------------------------IMPORTS----------------------------------------'''
 import sys, os
+import time
 from Graph import *
 from Player import *
 from Chromosome import *
@@ -25,7 +26,7 @@ p2Chrome = Chromosome(['build','block','adv-build','adv-block','random'],interva
 
 n = 15 # number of nodes
 # incase fixed
-fixed = True # make is much quicker
+fixed = False # make is much quicker
 g = Graph(n)
 g.setInterval(intervals)
 g.prep() # reset graph and prep triangles
@@ -97,11 +98,19 @@ def evalFunc(chromosome):
             score+=1.0
     return score
 
+def timer(func):
+    def wrapper():
+        t1 = time.time()
+        func()
+        t2 = time.time()
+        print(t2-t1)
+    return wrapper
 
+@timer
 def testMain():
     ran = lambda upper: random.randint(0,upper)
     x = len(chrome)-1
-    for i in range(100):
+    for i in range(2):
         play([ran(x),ran(x),ran(x),ran(x),ran(x)])
         
 

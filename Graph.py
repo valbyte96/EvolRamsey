@@ -212,6 +212,12 @@ class Graph:
         self.countT()
         self.unit = self.getNumEdges()/self.intervals
         self.check = self.unit
+
+    def defUnit(self):
+        '''to use for adjusting pickled graph units'''
+        self.unit = self.getNumEdges()/self.intervals
+        self.check = self.unit
+        
     def checkInterval(self, p1, p2):
         if self.cCount >=self.check:
             self.check+=self.unit
@@ -244,6 +250,7 @@ class Graph:
         '''increments the counter for number of edges colored'''
         self.cCount+=1
     def done(self):
+        print(len(self.edgeList))
         '''indicates whether or not all edges are colored'''
         if self.cCount == len(self.edgeList):
             return True
