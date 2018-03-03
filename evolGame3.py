@@ -110,7 +110,7 @@ def timer(func):
 def testMain():
     ran = lambda upper: random.randint(0,upper)
     x = len(chrome)-1
-    for i in range(2):
+    for i in range(100):
         play([ran(x),ran(x),ran(x),ran(x),ran(x)])
         
 

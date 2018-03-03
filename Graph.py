@@ -208,7 +208,8 @@ class Graph:
             self.addNode(i)
     def prep(self):
         '''Given a graph on n nodes, randomize, count, and define units'''
-        self.randomize()
+        #self.randomize()
+        self.dynamicRand()
         self.countT()
         self.unit = self.getNumEdges()/self.intervals
         self.check = self.unit
@@ -233,7 +234,6 @@ class Graph:
     def setVerbose(self, n):
         self.verbose = n
     def setUnit(self, unit):
-        print(unit)
         self.unit = unit
 
     def addNode(self, i): 
@@ -250,7 +250,7 @@ class Graph:
         '''increments the counter for number of edges colored'''
         self.cCount+=1
     def done(self):
-        print(len(self.edgeList))
+        #print(len(self.edgeList))
         '''indicates whether or not all edges are colored'''
         if self.cCount == len(self.edgeList):
             return True
@@ -315,7 +315,60 @@ class Graph:
                 n2 = random.randint(0,n-1)
             self.addEdge(self.getNode(n1),self.getNode(n2))
             total-=1
-        return self            
+        return self
+
+    def dynamicRand(self):
+        '''goal is to improve the randomization of
+        graphs via dynamic programming'''
+        self.reset()
+        n = self.nNodes
+        total = random.randint(n+1,n*(n-1)/2)
+        cache = {} # cache edges
+        while(total!=0):
+            n1 = random.randint(0,n-1)
+            n2 = random.randint(0,n-1)
+            if n1==n2:
+                continue
+            key1 = str(n1)+'.'+str(n2)
+            key2 = str(n2)+'.'+str(n1)
+            if key1 in cache or key2 in cache:
+                continue
+            else:
+                cache[key1]=True
+                cache[key2]=True
+                self.addEdge(self.getNode(n1),self.getNode(n2))
+                total-=1
+                
+            
+                
+
+            
+        
+        
+    def dynamicRandDefunct(self):
+        '''goal is to improve the randomization of
+        graphs via dynamic programming'''
+        print("before")
+        n = self.nNodes
+        cache = [False]*(2**(n-2))*(3**(n-1)) # init cache #way too big
+        print("after")
+        total = random.randint(n+1,n*(n-1)/2)
+        while(total!=0):
+            n1 = random.randint(0,n-1)
+            n2 = random.randint(0,n-1)
+            while(n1==n2 or cache[(2**n1)*(3**n2)] or cache[(2**n2)*(3**n1)] ):
+                n1 = random.randint(0,n-1)
+                n2 = random.randint(0,n-1)
+            cache[(2**n1)*(3**n2)]=True
+            cache[(2**n2)*(3**n1)]=True
+            self.addEdge(self.getNode(n1),self.getNode(n2))
+            
+                
+            
+        
+        
+        
+        return self
     def reset(self):
         '''removes all edges and readds nodes to reset to blank graph'''
         del self.nodeList[:]
@@ -416,7 +469,9 @@ class Graph:
                         e1.addTri(newTri)
                         e2.addTri(newTri)
         if self.verbose>0:
+            print("verbose")
             print(len(self.triangles))
+            
     
 
         

@@ -36,12 +36,13 @@ class Player:
                 self.random()
             
     def setStrat(self, num):
-        if num<len(self.stratList):
+        tLen = len(self.stratList)
+        if num<tLen:
             self.strat = self.stratList[num]
         else:
             print("warning: id number greater than interval number")
-            print("suggested index:",num)
-            self.strat = self.stratList[0]
+            print("suggested index:",num,"length of strats",tLen)
+            self.strat = self.stratList[tLen-1]
 
     def setStrats(self, strats):
         '''Responsible for initializing list of strategies as well as first strategy'''
