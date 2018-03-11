@@ -340,30 +340,6 @@ class Graph:
                 total-=1
                 
             
-                
-
-            
-        
-        
-    def dynamicRandDefunct(self):
-        '''goal is to improve the randomization of
-        graphs via dynamic programming'''
-        print("before")
-        n = self.nNodes
-        cache = [False]*(2**(n-2))*(3**(n-1)) # init cache #way too big
-        print("after")
-        total = random.randint(n+1,n*(n-1)/2)
-        while(total!=0):
-            n1 = random.randint(0,n-1)
-            n2 = random.randint(0,n-1)
-            while(n1==n2 or cache[(2**n1)*(3**n2)] or cache[(2**n2)*(3**n1)] ):
-                n1 = random.randint(0,n-1)
-                n2 = random.randint(0,n-1)
-            cache[(2**n1)*(3**n2)]=True
-            cache[(2**n2)*(3**n1)]=True
-            self.addEdge(self.getNode(n1),self.getNode(n2))
-            
-                
             
         
         

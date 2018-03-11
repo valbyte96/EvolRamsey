@@ -12,19 +12,24 @@ from Chromosome import *
 import random as rand
 sys.path.append(os.path.abspath('../pyevolve'))
 from pyevolve import *
+import cPickle as pickle
 '''----------------------------------GLOBALS----------------------------------------'''
 intervals = 5 # number of game intervals
 n = 15 # number of nodes
 chrome = ['build','block', 'adv-build', 'adv-block', 'random']
 p2Chrome = Chromosome(['build','block', 'adv-build', 'adv-block', 'random'],intervals).getStrats() # all possible chromosomes
 
+# IF YOU WANT PICKLED FIXED GRAPHS
+filehandler = open('GraphList_n15_L3.obj', 'r') 
+graphList = pickle.load(filehandler) # list of random graph objects
 # incase fixed
 fixed = True
-g = Graph(n)
+#g = Graph(n)
+g = graphList[0]
 g.setInterval(intervals)
 g.prep() # reset graph and prep triangles
 
-'''----------------------------------EVOLUTION----------------------------------------'''
+'''----------------------------------PLAY----------------------------------------'''
 
 
 
@@ -82,7 +87,7 @@ def play(chromosome):
 
 def playN(chromosome):
     '''Play game n times in order to compare strategies'''
-    nGames = 100 # number of games to play
+    nGames = 1000 # number of games to play
     p1Wins = 0
     p2Wins = 0
     ties = 0

@@ -19,9 +19,10 @@ import cPickle as pickle
 intervals = 5 # number of game intervals
 chrome = ['build','block','adv-build', 'adv-block','random']
 p2Chrome = Chromosome(['build','block','adv-build','adv-block','random'],intervals).getStrats() # all possible chromosomes
-filehandler = open('GraphList_n15_L1000.obj', 'r') 
-graphList = pickle.load(filehandler) # list of 1000 random graph objects
 
+# IF YOU WANT PICKLED FIXED GRAPHS
+filehandler = open('GraphList_n15_L3.obj', 'r') 
+graphList = pickle.load(filehandler) # list of random graph objects
 '''----------------------------------GRAPH GLOBALS----------------------------------------'''
 
 
@@ -110,7 +111,7 @@ def getBest():
 
 def mainEvol():
     global g
-    g = Graph(n)
+    g = graphList[0] # pick first of pickled
     #g = graphList[idx]
     g.setInterval(intervals)
     g.prep() # reset graph and prep triangles
@@ -127,11 +128,13 @@ def mainEvol():
     
     
     best = []
-    popSize = 100
-    nGens = 100
+    popSize = 80
+    nGens = 20
     #genome.crossover.set(Crossovers.G1DListCrossoverUniform)
     genome.crossover.set(Crossovers.G1DListCrossoverTwoPoint)
-    genome.mutator.set(Mutators.G1DListMutatorSwap)
+    #genome.mutator.set(Mutators.G1DListMutatorSwap)
+    genome.mutator.set(Mutators.G1DListMutatorIntegerRange)
+    #genome.mutator.setParams(rangemin=0,rangemax=)
     ga = GSimpleGA.GSimpleGA(genome)
 
     ga.setPopulationSize(popSize) # defaults to 80
@@ -147,4 +150,49 @@ def mainEvol():
     #print(ga.bestIndividual())
     #print(genome)
 
-mainEvol()
+
+def nEvol():
+    iterations = 4
+    global g
+    g = graphList[0] # pick first of pickled
+    g.setInterval(intervals)
+    g.prep() # reset graph and prep triangles
+    
+
+    for i in range(iterations):
+        print("iteration:",i+1)
+        genome = G1DList.G1DList(intervals) # create random list of numbers
+        genome.evaluator.set(evalFunc) #pass in fitness function
+        genome.setParams(rangemin=0, rangemax=len(chrome)-1) #set range for numbers
+        global ga
+        global best
+        global popSize
+        global nGens
+        
+        
+        
+        best = []
+        del best[:] # empty best
+
+        popSize = 80
+        nGens = 20
+        genome.crossover.set(Crossovers.G1DListCrossoverTwoPoint)
+        genome.mutator.set(Mutators.G1DListMutatorIntegerRange)
+        ga = GSimpleGA.GSimpleGA(genome)
+
+        ga.setPopulationSize(popSize) # defaults to 80
+        ga.setGenerations(nGens) # nGens + 1
+
+
+        ga.evolve(freq_stats=10)
+        short = getBest()
+        print(short)
+
+            
+
+
+    #print(ga.bestIndividual())
+    #print(genome)
+
+#mainEvol()
+nEvol()

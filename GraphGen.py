@@ -6,7 +6,7 @@ of evolving code'''
 import cPickle as pickle
 from Graph import *
 n = 15
-L = 5
+L = 3
 intervals = 500
 graphList = []
 
@@ -18,9 +18,8 @@ for i in range(L):
     graphList.append(g)
 
 
-print(len(graphList))
-#fObj = open('GraphList_n15_L100.obj', 'w')
+#fObj = open('GraphList_n15_L3.obj', 'w')
 #pickle.dump(graphList, fObj)
 
-#with open("GraphList_n15_L100.obj", "wb") as f:
-    #pickle.dump(graphList, f)
+with open("GraphList_n15_L3.obj", "wb") as f:
+    pickle.dump(graphList, f)

@@ -1,7 +1,7 @@
-from __future__ import absolute_import, division, print_function
-'''---------------------------------nGames.py----------------------------------------
-plays the game n times and records the win percentage 
-'''
+'''StratSpaceTest.py
+File takes a look at the strategy space for our five strategies over 5 intervals
+this gives 5^5 or 3125 strategies to look over.
+Idea'''
 
 '''---------------------------------IMPORTS----------------------------------------'''
 import sys, os
@@ -10,42 +10,34 @@ from Player import *
 from Chromosome import *
 import random as rand
 sys.path.append(os.path.abspath('../pyevolve'))
-from pyevolve import *
 import cPickle as pickle
-'''----------------------------------GLOBALS----------------------------------------'''
-intervals = 5 # number of game intervals
-n = 7 # number of nodes
+'''---------------------------------GLOBALS----------------------------------------'''
+intervals = 5
 chrome = ['build','block', 'adv-build', 'adv-block', 'random']
-p2Chrome = Chromosome(['build','block', 'adv-build', 'adv-block', 'random'],intervals).getStrats() # all possible chromosomes
-
-# if pickled
+allStrats = Chromosome(['build','block','adv-build','adv-block','random'],intervals).getStrats() # all possible strategies
+# IF YOU WANT PICKLED FIXED GRAPHS
 filehandler = open('GraphList_n15_L3.obj', 'r') 
 graphList = pickle.load(filehandler) # list of random graph objects
+n = 15 # number of nodes
 # incase fixed
 fixed = True
-g = graphList[0] # pick first of pickled
 #g = Graph(n)
+g = graphList[0]
 g.setInterval(intervals)
 g.prep() # reset graph and prep triangles
 
-
-'''----------------------------------PLAY----------------------------------------'''
-
-
-
+'''---------------------------------FUNCTIONS----------------------------------------'''
 def play(chromosome):
     '''this play function randomizes the graph every game'''
+    
     if fixed:
         g.resetFixed()
     else:
         g.prep() # reset graph and prep triangles
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
-    
     player1.setStrats(chromosome) # set strat list as well as initial strategy
-    #player1.setStrats(p2Chrome[random.randint(0,len(p2Chrome)-1)])
-    #player2.setStrats(p2Chrome[random.randint(0,len(p2Chrome)-1)])
-    player2.setStrats(['random', 'random','random','random','random'])
+    player2.setStrats(allStrats[random.randint(0,len(allStrats)-1)])
     
     r = 0 # debug
     unit = g.getNumEdges()/intervals
@@ -83,43 +75,34 @@ def play(chromosome):
 
     return g.winner()
 
-    
-
-
-def main():
-    '''Every game played on a new random graph on n nodes'''
-    nGames = 20 # number of games to play
+def playN(chromosome):
+    '''Play game n times in order to compare strategies'''
+    nGames = 1000 # number of games to play
     p1Wins = 0
     p2Wins = 0
     ties = 0
-    chromosome = [3, 3, 3, 3, 3]
     strats = []
-    for c in chromosome:
-        strats.append(chrome[c])
+    #for c in chromosome:
+        #strats.append(chrome[int(c)])
 
-    for i in range(20):
-        win = play(strats)
+    for i in range(nGames):
+        win = play(chromosome)
         if win == "red":
             p1Wins+=1
         elif win == "blue":
             p2Wins+=1
         else:
             ties+=1
-    output(p1Wins, p2Wins, ties, nGames)
+    return [p1Wins, p2Wins, ties, chromosome]
 
-
-def output(p1Wins, p2Wins, ties, nGames):
-    '''Out puts information about the games played'''
-    print("player 1")
-    print("total wins:", p1Wins)
-    print("win percent:", p1Wins/nGames*100)
-    print()
-    print("player 2")
-    print("total wins:", p2Wins)
-    print("win percent:", p2Wins/nGames*100)
-    print()
-    print("ties:",ties)
-    print("win percent:", ties/nGames*100)
+def main():
+    result = []
+    #C = [['1', '4', 4, 0, 3],[0, 0, 3, 2, 0],[0, 0, 3, 2, 0]]
+    for c in allStrats:
+        result.append(playN(c))
+    print("done")
+    result.sort(reverse=True)
+    print(result[0:50]) # print top fifty
     
 
 main()
