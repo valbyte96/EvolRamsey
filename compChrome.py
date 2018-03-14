@@ -14,7 +14,7 @@ sys.path.append(os.path.abspath('../pyevolve'))
 from pyevolve import *
 import cPickle as pickle
 '''----------------------------------GLOBALS----------------------------------------'''
-intervals = 5 # number of game intervals
+intervals = 10 # number of game intervals
 n = 15 # number of nodes
 chrome = ['build','block', 'adv-build', 'adv-block', 'random']
 p2Chrome = Chromosome(['build','block', 'adv-build', 'adv-block', 'random'],intervals).getStrats() # all possible chromosomes
@@ -25,7 +25,7 @@ graphList = pickle.load(filehandler) # list of random graph objects
 # incase fixed
 fixed = True
 #g = Graph(n)
-g = graphList[0]
+g = graphList[1]
 g.setInterval(intervals)
 g.prep() # reset graph and prep triangles
 

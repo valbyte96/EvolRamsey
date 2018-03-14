@@ -16,7 +16,7 @@ from pyevolve import *
 import cPickle as pickle
 
 '''----------------------------------GAME GLOBALS----------------------------------------'''
-intervals = 5 # number of game intervals
+intervals = 10 # number of game intervals
 chrome = ['build','block','adv-build', 'adv-block','random']
 p2Chrome = Chromosome(['build','block','adv-build','adv-block','random'],intervals).getStrats() # all possible chromosomes
 
@@ -152,11 +152,15 @@ def mainEvol():
 
 
 def nEvol():
-    iterations = 4
+    iterations = 6
     global g
     g = graphList[0] # pick first of pickled
     g.setInterval(intervals)
     g.prep() # reset graph and prep triangles
+    g.defUnit()
+
+    final = []
+
     
 
     for i in range(iterations):
@@ -174,19 +178,23 @@ def nEvol():
         best = []
         del best[:] # empty best
 
-        popSize = 80
-        nGens = 20
+        popSize = 160
+        nGens = 40
         genome.crossover.set(Crossovers.G1DListCrossoverTwoPoint)
-        genome.mutator.set(Mutators.G1DListMutatorIntegerRange)
+        #genome.mutator.set(Mutators.G1DListMutatorIntegerRange)
+        genome.mutator.set(Mutators.G1DListMutatorSwap)
         ga = GSimpleGA.GSimpleGA(genome)
 
         ga.setPopulationSize(popSize) # defaults to 80
         ga.setGenerations(nGens) # nGens + 1
 
 
-        ga.evolve(freq_stats=10)
+        ga.evolve(freq_stats=20)
         short = getBest()
         print(short)
+        final.append(short[len(short)-1])
+    print()
+    print(final)
 
             
 
