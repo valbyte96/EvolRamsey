@@ -1,6 +1,10 @@
 from __future__ import absolute_import, division, print_function
-'''---------------------------------nGames.py----------------------------------------
-plays the game n times and records the win percentage for on a list of chromosomes
+'''FitnessRangeGraph.py
+The idea behind this program is to take in a number of strategies, play n games
+on each of strategy t times, graph the mean fitness as well as itermediate points 
+
+Point is to see variation 
+
 '''
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,7 +18,7 @@ sys.path.append(os.path.abspath('../pyevolve'))
 from pyevolve import *
 import cPickle as pickle
 '''----------------------------------GLOBALS----------------------------------------'''
-intervals = 10 # number of game intervals
+intervals = 5 # number of game intervals
 n = 15 # number of nodes
 chrome = ['build','block', 'adv-build', 'adv-block', 'random']
 p2Chrome = Chromosome(['build','block', 'adv-build', 'adv-block', 'random'],intervals).getStrats() # all possible chromosomes
@@ -82,12 +86,10 @@ def play(chromosome):
 
     return g.winner()
 
-    
 
 
-def playN(chromosome):
+def playN(chromosome, nGames):
     '''Play game n times in order to compare strategies'''
-    nGames = 1000 # number of games to play
     p1Wins = 0
     p2Wins = 0
     ties = 0
@@ -103,43 +105,84 @@ def playN(chromosome):
             p2Wins+=1
         else:
             ties+=1
-    return [p1Wins, p2Wins, ties]
+    #return [p1Wins, p2Wins, ties]
+    return [p1Wins]
 
+def mean(L):
+    s = 0
+    for i in L:
+        s+=i[0]
+    return s/len(L)
+def parse(results):
+    means = []
+    for stratL in results:
+        means.append(mean(stratL))
+    return means
+        
 
-def main():
-    result = []
-    #C = [['1', '4', 4, 0, 3],[0, 0, 3, 2, 0],[0, 0, 3, 2, 0]]
-    C = input("input chromosomes: ")
-    for c in C:
-        result.append(playN(c))
-    graph(result)
+def tmain():
 
-def graph(sample):
-    #sample = [[69, 175, 6], [148, 90, 12], [154, 83, 13]]
-
-    objects = ["G"+str(i) for i in range(len(sample))]
-    wins = [L[0] for L in sample] # list of wins
-    losses =  [L[1] for L in sample]
-    ties =  [L[2] for L in sample]
-
-    # chart portion
-    fig, ax = plt.subplots()
-    ind = np.arange(len(objects))
-    width = 0.25
-    rects1 = ax.bar(ind, wins, width, color='g')
-    rects2 = ax.bar(ind + width, losses, width, color='r')
-    rects3 = ax.bar(ind + 2*width, ties, width, color='y')
-    ax.set_xticks(ind + width)
-    ax.set_xticklabels(objects)
+    s = [[[10, 0, 0], [8, 2, 0], [9, 1, 0], [9, 0, 1], [7, 3, 0]],
+         [[8, 2, 0], [10, 0, 0], [7, 3, 0], [8, 1, 1], [10, 0, 0]],
+         [[7, 3, 0], [7, 2, 1], [7, 2, 1], [6, 4, 0], [9, 1, 0]],
+         [[8, 1, 1], [8, 2, 0], [7, 2, 1], [7, 2, 1], [8, 2, 0]],
+         [[8, 2, 0], [3, 7, 0], [7, 2, 1], [8, 2, 0], [6, 4, 0]],
+         [[9, 1, 0], [9, 1, 0], [8, 1, 1], [9, 1, 0], [9, 1, 0]]]
     
+    graph(s, 10)
 
+
+def graph(results, n):
+    means = parse(results)
+    sLen = len(means)
+    x = [i+1 for i in range(sLen)]
+
+    objects = ["Strat"+str(i) for i in range(sLen)]
+    plt.xticks(x, objects, rotation='horizontal')
+    # plot means
+    plt.plot([x], [means], marker='o', markersize=7, color="red")
+    # plot results range
+    for i in range(sLen):
+        for j in results[i]:
+            plt.plot(i+1,j[0],marker='x', markersize=3, color="blue")
+
+    # adjust axis
+    plt.ylim(ymax=n+1) 
+    plt.ylim(ymin=0)
+    plt.xlim(xmin=.5)
+    plt.xlim(xmax=sLen+.5)
     plt.show()
 
     
+    
 
-        
+
+
+def main():
+    s = 20 # sample size
+    n = 1000 # number of games per sample
+    # top 6 strategies
+    strats = [[2, 0, 2, 2, 4], [2, 2, 2, 2, 4], [2, 1, 2, 2, 4],
+              [2, 3, 0, 2, 4], [3, 0, 2, 2, 4], [3, 2, 2, 2, 4]]
+    #strats = input("input strats: ")
+
+    stratResults = []
+    for strat in strats:
+        results = []
+        for i in range(s):
+            results.append(playN(strat, n))
+        stratResults.append(results)
+    graph(stratResults, n)
 
 
     
+            
+            
+            
+        
+
+    
+
+
 
 main()
