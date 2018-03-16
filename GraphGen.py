@@ -5,11 +5,13 @@ of evolving code'''
 
 import cPickle as pickle
 from Graph import *
+import sys
 n = 15
-L = 3
-intervals = 500
+L = 1000
+intervals = 5
 graphList = []
-
+sys.setrecursionlimit(1500)
+#print(sys.getrecursionlimit())
 
 for i in range(L):
     g = Graph(n)
@@ -21,5 +23,8 @@ for i in range(L):
 #fObj = open('GraphList_n15_L3.obj', 'w')
 #pickle.dump(graphList, fObj)
 
-with open("GraphList_n15_L3.obj", "wb") as f:
+#with open("test.obj", "wb") as f:
+#    pickle.dump(graphList, f)
+
+with open("GraphList_n15_L1000.obj", "wb") as f:
     pickle.dump(graphList, f)

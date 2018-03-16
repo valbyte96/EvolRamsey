@@ -41,6 +41,8 @@ def play(chromosome):
         strats.append(chrome[c])
 
     g = graphList[rand.randint(0,len(graphList)-1)] # get random graph
+    g.setInterval(intervals)
+    g.defUnit()
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
     
@@ -56,7 +58,6 @@ def play(chromosome):
     while(True):
         if first == 0: # player 1 goes first
             if g.done(): # stop
-                print("here")
                 break
             player1.play()
             g.checkInterval(player1, player2)
@@ -111,12 +112,6 @@ def getBest():
     return short
 
 def mainEvol():
-    global g
-    g = Graph(n)
-    g.setInterval(intervals)
-    g.prep() # reset graph and prep triangles
-
-
     genome = G1DList.G1DList(intervals) # create random list of numbers
     genome.evaluator.set(evalFunc) #pass in fitness function
     genome.setParams(rangemin=0, rangemax=len(chrome)-1) #set range for numbers
@@ -129,7 +124,7 @@ def mainEvol():
     
     best = []
     popSize = 100
-    nGens = 100
+    nGens = 15
     #genome.crossover.set(Crossovers.G1DListCrossoverUniform)
     genome.crossover.set(Crossovers.G1DListCrossoverTwoPoint)
     genome.mutator.set(Mutators.G1DListMutatorSwap)
