@@ -13,6 +13,7 @@ Graph.py contains three separate classes:
 from graphics import *
 import sys, os
 import random
+import math
 '''---------------------------------GLOBALS-----------------------------------------'''
 colors = ['red', 'blue']
 '''--------------------------------NODE CLASS-------------------------------------'''
@@ -220,12 +221,14 @@ class Graph:
         self.check = self.unit
         
     def checkInterval(self, p1, p2):
-        if self.cCount >=self.check:
+        if self.cCount >=self.check :
+            #print("check",self.check)
             self.check+=self.unit
             self.strat+=1
             # switch strategies unless it's the one unit after final
             # NOTE: if it is more than one unit it will throw a warning
-            if not int(self.check-self.unit)==len(self.edgeList):
+            if not math.ceil(self.check-self.unit)==len(self.edgeList) and not math.floor(self.check-self.unit)==len(self.edgeList):
+                #print("gun",math.ceil(self.check-self.unit))
                 p1.setStrat(self.strat)
                 p2.setStrat(self.strat)     
     def setInterval(self, n):

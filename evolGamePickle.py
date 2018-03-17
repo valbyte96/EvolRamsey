@@ -43,6 +43,8 @@ def play(chromosome):
     g = graphList[rand.randint(0,len(graphList)-1)] # get random graph
     g.setInterval(intervals)
     g.defUnit()
+    #print("unit",g.unit)
+    #print("edges",len(g.edgeList))
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
     
@@ -86,7 +88,7 @@ def play(chromosome):
 def evalFunc(chromosome):
     best.append(ga.bestIndividual()) # record best individual at fitness call
     score = 0.0
-    for g in range(10):
+    for i in range(1000): # INCREASED
         result = play(chromosome)
         if result == "red":
             score+=1.0
@@ -127,7 +129,9 @@ def mainEvol():
     nGens = 15
     #genome.crossover.set(Crossovers.G1DListCrossoverUniform)
     genome.crossover.set(Crossovers.G1DListCrossoverTwoPoint)
-    genome.mutator.set(Mutators.G1DListMutatorSwap)
+    #genome.mutator.set(Mutators.G1DListMutatorSwap)
+    genome.mutator.set(Mutators.G1DListMutatorIntegerRange)
+
     ga = GSimpleGA.GSimpleGA(genome)
 
     ga.setPopulationSize(popSize) # defaults to 80
