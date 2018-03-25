@@ -17,20 +17,20 @@ import math
 
 WIDTH = 500
 HEIGHT = 500
-n = 10
+n = 4
 #strats = ['adv-block','adv-block','adv-block','adv-block','adv-block']
 strats = ['adv-build','adv-build','adv-build','adv-build','adv-build']
 '''------------------------------------GAME----------------------------------------'''
 def main():
-
     '''<---initialize graph and computer--->'''
     g = Graph(n)
     g.setInterval(len(strats))
     g.prep()
+    print(len(g.edgeList))
     win = GraphWin('Ramsey', WIDTH, HEIGHT)
     graph = DGraph(g, win, WIDTH/2, HEIGHT/2)
-#    graph.drawCircle()
-    graph.drawRandom()
+    graph.drawCircle()
+#    graph.drawRandom()
     comp = Player(1, g) # blue
     comp.setStrats(strats)
     comp.onDisplay()

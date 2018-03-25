@@ -203,6 +203,7 @@ class Graph:
         self.check = 0
         self.strat = 0
         self.win = None
+        self.testMessage = "unchanged"
         
         '''adds nodes specified'''
         for i in range(nNodes):
@@ -360,6 +361,7 @@ class Graph:
     def resetFixed(self):
         nodes = self.nodeList
         edges = self.edgeList
+        self.testMessage = "unchanged"
         # node variables
         for n in nodes:
             n.visited = False

@@ -7,7 +7,7 @@ import cPickle as pickle
 from Graph import *
 import sys
 n = 15
-L = 1000
+L = 5
 intervals = 5
 graphList = []
 sys.setrecursionlimit(1500)
@@ -26,5 +26,5 @@ for i in range(L):
 #with open("test.obj", "wb") as f:
 #    pickle.dump(graphList, f)
 
-with open("GraphList_n15_L1000.obj", "wb") as f:
+with open("GraphList_n15_L5.obj", "wb") as f:
     pickle.dump(graphList, f)

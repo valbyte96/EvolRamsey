@@ -82,7 +82,9 @@ def play(chromosome):
             player1.play()
             g.checkInterval(player1, player2)
 
-    return g.winner()
+    winner = g.winner()
+    g.resetFixed() # reset graph to original state
+    return winner
 
 #    
 def evalFunc(chromosome):

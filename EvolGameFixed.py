@@ -14,9 +14,10 @@ import random as rand
 sys.path.append(os.path.abspath('../pyevolve'))
 from pyevolve import *
 import cPickle as pickle
+import copy
 
 '''----------------------------------GAME GLOBALS----------------------------------------'''
-intervals = 10 # number of game intervals
+intervals = 5 # number of game intervals
 chrome = ['build','block','adv-build', 'adv-block','random']
 p2Chrome = Chromosome(['build','block','adv-build','adv-block','random'],intervals).getStrats() # all possible chromosomes
 
@@ -28,6 +29,10 @@ graphList = pickle.load(filehandler) # list of random graph objects
 
 n = 15 # number of nodes
 idx = rand.randint(0,len(graphList)-1)
+g = graphList[0] # pick first of pickled
+g.setInterval(intervals)
+g.prep() # reset graph and prep triangles
+
 
 
 
@@ -38,8 +43,9 @@ def play(chromosome):
     strats = []
     for c in chromosome:
         strats.append(chrome[c])
-    g.resetFixed()
+    
     #g = graphList[idx]
+    #g = copy.deepcopy(resetGraph)
     
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
@@ -77,14 +83,15 @@ def play(chromosome):
 
             player1.play()
             g.checkInterval(player1, player2)
-
-    return g.winner()
+    winner = g.winner()
+    g.resetFixed()
+    return winner
 
 #    
 def evalFunc(chromosome):
     best.append(ga.bestIndividual()) # record best individual at fitness call
     score = 0.0
-    for g in range(10):
+    for i in range(1000):
         result = play(chromosome)
         if result == "red":
             score+=1.0
@@ -110,13 +117,6 @@ def getBest():
     return short
 
 def mainEvol():
-    global g
-    g = graphList[0] # pick first of pickled
-    #g = graphList[idx]
-    g.setInterval(intervals)
-    g.prep() # reset graph and prep triangles
-
-
     genome = G1DList.G1DList(intervals) # create random list of numbers
     genome.evaluator.set(evalFunc) #pass in fitness function
     genome.setParams(rangemin=0, rangemax=len(chrome)-1) #set range for numbers
@@ -152,7 +152,7 @@ def mainEvol():
 
 
 def nEvol():
-    iterations = 6
+    iterations = 4
     global g
     g = graphList[0] # pick first of pickled
     g.setInterval(intervals)
@@ -178,8 +178,8 @@ def nEvol():
         best = []
         del best[:] # empty best
 
-        popSize = 160
-        nGens = 40
+        popSize = 80
+        nGens = 20
         genome.crossover.set(Crossovers.G1DListCrossoverTwoPoint)
         #genome.mutator.set(Mutators.G1DListMutatorIntegerRange)
         genome.mutator.set(Mutators.G1DListMutatorSwap)
@@ -202,5 +202,5 @@ def nEvol():
     #print(ga.bestIndividual())
     #print(genome)
 
-#mainEvol()
-nEvol()
+mainEvol()
+#nEvol()

@@ -24,14 +24,14 @@ chrome = ['build','block', 'adv-build', 'adv-block', 'random']
 p2Chrome = Chromosome(['build','block', 'adv-build', 'adv-block', 'random'],intervals).getStrats() # all possible chromosomes
 
 # IF YOU WANT PICKLED FIXED GRAPHS
-filehandler = open('GraphList_n15_L3.obj', 'r') 
+filehandler = open('GraphList_n15_L1000.obj', 'r') 
 graphList = pickle.load(filehandler) # list of random graph objects
 # incase fixed
 fixed = True
 #g = Graph(n)
-g = graphList[1]
-g.setInterval(intervals)
-g.prep() # reset graph and prep triangles
+#g = graphList[1]
+#g.setInterval(intervals)
+#g.prep() # reset graph and prep triangles
 
 '''----------------------------------PLAY----------------------------------------'''
 
@@ -40,10 +40,11 @@ g.prep() # reset graph and prep triangles
 def play(chromosome):
     '''this play function randomizes the graph every game'''
     
-    if fixed:
-        g.resetFixed()
-    else:
-        g.prep() # reset graph and prep triangles
+    #if fixed:
+        #g.resetFixed()
+    g = graphList[rand.randint(0,999)]
+    g.setInterval(intervals)
+    # reset graph and prep triangles
     player1 = Player(0, g) # red
     player2 = Player(1, g) # blue
     
@@ -83,8 +84,9 @@ def play(chromosome):
             player1.play()
             g.checkInterval(player1, player2)
             r+=1 # debug
-
-    return g.winner()
+    winner = g.winner()
+    g.resetFixed()
+    return winner
 
 
 
@@ -162,9 +164,10 @@ def main():
     s = 20 # sample size
     n = 1000 # number of games per sample
     # top 6 strategies
-    strats = [[2, 0, 2, 2, 4], [2, 2, 2, 2, 4], [2, 1, 2, 2, 4],
-              [2, 3, 0, 2, 4], [3, 0, 2, 2, 4], [3, 2, 2, 2, 4]]
-    #strats = input("input strats: ")
+    #strats = [[2, 0, 2, 2, 4], [2, 2, 2, 2, 4], [2, 1, 2, 2, 4],
+              #[2, 3, 0, 2, 4], [3, 0, 2, 2, 4], [3, 2, 2, 2, 4]]
+    strats = input("input strats: ")
+    
 
     stratResults = []
     for strat in strats:
